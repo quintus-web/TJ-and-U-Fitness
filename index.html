@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<!-- Completely locks viewport scaling to prevent broken layouts and field auto-zooming on mobile devices -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
 <title>TJ & U Fitness Club — Buru Buru, Nairobi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin"/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
 /* ════════════════════════════════════════════
@@ -26,10 +27,8 @@
   /* LOGO ACCENTS — Olympic Gold & Metallic Tone */
   --fire:#d4af37;
   --fire-hot:#e5c158;
-  --fire-deep:#aa841b;
   --fire-glow:rgba(212,175,55,.15);
   --fire-soft:rgba(212,175,55,.06);
-  --fire-dim:rgba(212,175,55,.02);
 
   --ff-d:'Bebas Neue',sans-serif;
   --ff-b:'Syne',sans-serif;
@@ -76,7 +75,7 @@ a{text-decoration:none;color:inherit}
   position:fixed;top:0;left:0;right:0;z-index:800;
   display:flex;align-items:center;justify-content:space-between;
   padding:2.5rem 5rem;
-  transition:all 0.4s cubic-bezier(.16,1,.3,1);
+  transition:all .4s cubic-bezier(.16,1,.3,1);
 }
 #nav.on{
   padding:1rem 5rem;
@@ -103,22 +102,22 @@ a{text-decoration:none;color:inherit}
   font-family:var(--ff-m);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
   background:var(--void);color:var(--bg);
   padding:.7rem 2.2rem;border:none;cursor:pointer;
-  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
   transition:all .25s;
 }
 .nav-btn:hover{background:var(--fire);color:var(--void);transform:translateY(-1px);box-shadow:0 8px 24px var(--fire-glow)}
 
-/* ════ CRYSTAL CLEAR SPLIT HERO ENGINE ════ */
+/* ════ HERO ENGINE — MOBILE VIEW SAFE ════ */
 .hero{
   min-height:100vh;
-  min-height:100svh; /* Solves address bar clipping bugs on smart phones */
+  min-height:100svh;
   position:relative;
   display:grid;grid-template-columns:1fr 1fr;
   background:var(--bg);padding:0;
 }
 .hero-left-content{
   display:flex;flex-direction:column;justify-content:center;
-  padding:8rem 5rem 4rem;position:relative;z-index:3;background:var(--bg);
+  padding:10rem 5rem 4rem;position:relative;z-index:3;background:var(--bg);
 }
 .hero-right-display {
   position:relative;overflow:hidden;width:100%;height:100%;
@@ -128,12 +127,6 @@ a{text-decoration:none;color:inherit}
 .hero-right-display::before {
   content:'';position:absolute;inset:0;
   background:linear-gradient(to right, var(--bg) 0%, transparent 15%);
-}
-.hero-ghost{
-  font-family:var(--ff-d);font-size:clamp(20rem,35vw,45rem);line-height:1;
-  color:transparent;-webkit-text-stroke:1px rgba(212,175,55,.08);
-  letter-spacing:-.04em;position:absolute;right:-2rem;top:50%;
-  transform:translateY(-48%);z-index:1;user-select:none;pointer-events:none;
 }
 
 .hero-kicker{
@@ -157,7 +150,6 @@ a{text-decoration:none;color:inherit}
 }
 .hero-btns{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:4rem}
 
-/* Hero Stats */
 .hero-stats{display:flex;border-top:1px solid var(--seam);padding-top:2.5rem;gap:4rem;}
 .hs{flex:1;}
 .hs-n{font-family:var(--ff-d);font-size:3.5rem;line-height:1;color:var(--void)}
@@ -184,7 +176,7 @@ a{text-decoration:none;color:inherit}
 .sh .out{-webkit-text-stroke:2px var(--void);color:transparent}
 .sh .hl{color:var(--fire);}
 
-/* ════ PHOTOGRAPHY EDITORIAL GRIDS ════ */
+/* ════ PHOTOGRAPHY ABOUT GRID ════ */
 .about{background:var(--bg);padding:0}
 .edi-row{display:grid;grid-template-columns:1.1fr 0.9fr;min-height:70vh;align-items:stretch}
 .edi-row.reverse {grid-template-columns: 0.9fr 1.1fr;}
@@ -203,15 +195,15 @@ a{text-decoration:none;color:inherit}
 .pill-t{font-family:var(--ff-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--void);margin-bottom:.4rem;font-weight:700}
 .pill-s{font-size:.9rem;color:var(--ash)}
 
-/* ════ HIGH-IMPACT HARDWARE GALLERY SHOWCASE ════ */
+/* ════ EXPANDED 9-BOX PRESTIGE GALLERY RUNWAY (EQUIPMENT VARIETY) ════ */
 .gallery-showcase {padding:10rem 5rem; background:var(--bg);}
-.gal-grid {display:grid; grid-template-columns: 1.5fr 1fr 1fr; gap:1.5rem; margin-top:4rem; height:550px;}
+.gal-grid {display:grid; grid-template-columns: repeat(3, 1fr); gap:1.5rem; margin-top:4rem;}
 .gal-box {
   background-size:cover; background-position:center; position:relative; overflow:hidden;
-  border:1px solid var(--seam); transition:transform 0.5s cubic-bezier(.16,1,.3,1);
+  border:1px solid var(--seam); transition:transform 0.5s cubic-bezier(.16,1,.3,1); height:280px;
 }
-.gal-box:hover {transform:scale(1.02); border-color:var(--fire); box-shadow:0 15px 30px rgba(0,0,0,0.08);}
-.gal-box.tall {grid-row: span 2;}
+.gal-box:hover {transform:scale(1.03); border-color:var(--fire); box-shadow:0 15px 30px rgba(0,0,0,0.08);}
+.gal-box.tall {grid-row: span 2; height: 575px;}
 .gal-box.wide {grid-column: span 2;}
 .gal-title-tag {
   position:absolute; bottom:1.5rem; left:1.5rem; background:var(--void); color:#fff;
@@ -219,14 +211,13 @@ a{text-decoration:none;color:inherit}
   padding:0.4rem 1rem; font-weight:700;
 }
 
-/* ════ SERVICES CARDS MATRIX ════ */
+/* ════ SERVICES DEEP EXPANSION — 6 DISTINCT TIER SLABS ════ */
 .services{background:var(--slab)}
 .srv-g{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:5rem}
 .srv{background:var(--bg); border:1px solid var(--seam); overflow:hidden; transition:all 0.4s ease;}
 .srv:hover {transform:translateY(-8px); border-color:var(--fire); box-shadow:0 20px 40px rgba(212,175,55,0.08);}
 .srv-img-banner {height:220px; width:100%; background-size:cover; background-position:center;}
 .srv-pad {padding:2.5rem;}
-.srv-ic{font-size:2.2rem; display:block; margin-bottom:1rem;}
 .srv-t{font-family:var(--ff-d);font-size:2.2rem;letter-spacing:.02em;color:var(--void);margin-bottom:.5rem}
 .srv-b{font-size:.92rem;color:var(--ash);line-height:1.65}
 
@@ -290,7 +281,7 @@ a{text-decoration:none;color:inherit}
 .tr-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem}
 .tr-tag{font-family:var(--ff-m);font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .65rem;background:var(--slab);color:var(--chalk);font-weight:700}
 
-/* ════ MEMBERSHIP LUXURY PLANS ════ */
+/* ════ MEMBERSHIP plans ════ */
 .membership{background:var(--bg)}
 .plan-switch{display:flex;gap:1px;background:var(--seam);border:1px solid var(--seam);margin:4rem 0 0;width:fit-content;}
 .ps-btn{font-family:var(--ff-m);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;padding:1rem 2.4rem;background:var(--slab);color:var(--ash);cursor:pointer;border:none;transition:all .25s;font-weight:700}
@@ -340,7 +331,7 @@ a{text-decoration:none;color:inherit}
 .hr .d{color:var(--ash)}
 .hr .t{font-family:var(--ff-m);font-size:.72rem;color:var(--void);font-weight:700}
 
-/* ════ PREMIUM EXECUTIVE CTA RUNWAY ════ */
+/* ════ IMPACT STRIP CTA ════ */
 .cta-strip{background:var(--void);padding:11rem 5rem;position:relative;overflow:hidden;text-align:center}
 .cta-ey{font-family:var(--ff-m);font-size:.68rem;letter-spacing:.38em;text-transform:uppercase;color:var(--fire);margin-bottom:1.5rem;position:relative;z-index:1;font-weight:700}
 .cta-h{font-family:var(--ff-d);font-size:clamp(4rem,9vw,9rem);line-height:.86;color:#ffffff;margin-bottom:3rem;position:relative;z-index:1}
@@ -372,7 +363,6 @@ footer{background:var(--bg);border-top:1px solid var(--seam);padding:8rem 5rem 3
 .foot-bot{border-top:1px solid var(--seam);padding-top:2.2rem;display:flex;justify-content:space-between;align-items:center;position:relative}
 .f-copy{font-size:.8rem;color:var(--ash);font-weight:500}
 .f-copy .hl{color:var(--fire);font-weight:700}
-.f-mono{font-family:var(--ff-m);font-size:.7rem;color:var(--smoke);letter-spacing:.12em;font-weight:700}
 
 /* ════ WHATSAPP FLOATER ════ */
 .wa-float{
@@ -408,7 +398,7 @@ footer{background:var(--bg);border-top:1px solid var(--seam);padding:8rem 5rem 3
 .form-input:focus{border-color:var(--fire);box-shadow:0 0 0 3px var(--fire-soft)}
 select.form-input{
   appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23ff4d00' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4af37' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:calc(100% - 1.2rem) center;cursor:pointer;
 }
 .submit-btn{
@@ -434,16 +424,15 @@ select.form-input{
 }
 @media(max-width:1024px){
   .nav-links{display:none}
-  .hero-ghost{display:none}
   .hero{padding:0 2rem;align-items:center;padding-top:7rem}
   .hero-left-content{padding:4rem 0;}
   .edi-row,.edi-row.reverse{grid-template-columns:1fr;min-height:auto}
   .edi-media{height:360px}
   .edi-content{padding:5rem 2rem}
   .gal-grid{grid-template-columns:1fr; height:auto;}
-  .gal-box{height:300px;}
+  .gal-box, .gal-box.tall{height:260px;}
   .sec{padding:6rem 2rem}
-  .srv-g,.cls-g,.tc-g{grid-template-columns:1fr;gap:1.5rem}
+  .srv-g,.tc-g{grid-template-columns:1fr;gap:1.5rem}
   .tr-g{grid-template-columns:1fr 1fr}
   .plans-wrap{grid-template-columns:1fr}
   .plan.feat{border-left:none;border-right:none;border-top:3px solid var(--fire)}
@@ -479,7 +468,7 @@ select.form-input{
 <nav id="nav">
   <a href="#" class="nav-logo">
     <img src="tj_an_u_logo.jfif" alt="" onerror="this.style.display='none'">
-    <span class="o">TJ & U</span>&nbsp;FITNESS CLUB
+    <span class="o">TJ &amp; U</span>&nbsp;FITNESS CLUB
   </a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
@@ -492,14 +481,14 @@ select.form-input{
   <button class="nav-btn" id="openModalBtn">Join Now</button>
 </nav>
 
-<!-- SPLIT CRYSTAL HERO STAGE -->
+<!-- SPLIT HERO STAGE -->
 <section class="hero" id="home">
   <div class="hero-left-content">
     <div class="hero-kicker" data-r><span class="kd"></span>Buru Buru · Nairobi · Est. 2024</div>
-    <h1 class="hero-h1" data-r data-d="1">FORGE<br>THE <span class="fire">IRON</span><br><span class="out">WITHIN</span></h1>
-    <p class="hero-sub" data-r data-d="2">Buru Buru's premier fitness destination. Built with elite hardware tracks, crisp visual transparency layouts, and certified coaching on Rabai Road.</p>
+    <h1 class="hero-h1" data-r data-d="1">DO IT<br>COZ <span class="fire">YOU</span><br><span class="out">COULDN'T</span></h1>
+    <p class="hero-sub" data-r data-d="2">Buru Buru's premier fitness destination. Built with spacious layout tracks, crisp crystal-clear equipment arrays, and supportive personal coaching on Rabai Road.</p>
     <div class="hero-btns" data-r data-d="3">
-      <button class="btn-fire" id="heroJoinBtn">Start Your Journey →</button>
+      <button class="btn-dark" id="heroJoinBtn">Start Your Journey →</button>
     </div>
     <div class="hero-stats" data-r data-d="4">
       <div class="hs"><div class="hs-n" data-count="500" data-suffix="+">0+</div><div class="hs-l">Active Members</div></div>
@@ -510,10 +499,10 @@ select.form-input{
   <div class="hero-right-display"></div>
 </section>
 
-<!-- RUNWAY TICKER -->
+<!-- RUNWAY MARQUEE TICKER -->
 <div class="mq" aria-hidden="true">
   <div class="mq-track">
-    <span class="mq-item">TJ & U FITNESS CLUB</span><span class="mq-item">BURU BURU · NAIROBI</span>
+    <span class="mq-item">TJ &amp; U FITNESS CLUB</span><span class="mq-item">BURU BURU · NAIROBI</span>
     <span class="mq-item">ELITE STRENGTH TRAINING</span><span class="mq-item">RABAI ROAD · PHASE 1</span>
   </div>
 </div>
@@ -527,7 +516,7 @@ select.form-input{
     <div class="edi-content">
       <div class="eyebrow" data-r>Our Space</div>
       <h2 class="sh" data-r data-d="1">WHERE GOALS<br>BECOME <span class="hl">REALITY</span></h2>
-      <p class="ab-p" data-r data-d="2">TJ & U Fitness Club is Buru Buru's definitive training platform. Engineered with crisp architectural lines and clean spacing, we match real iron power layouts with high-visibility luxury matrices.</p>
+      <p class="ab-p" data-r data-d="2">TJ &amp; U Fitness Club is Buru Buru's welcoming fitness community. Engineered with clean, open floor plans, we match professional, safe workout tracks with a friendly atmosphere designed for real body results.</p>
     </div>
   </div>
   <div class="edi-row reverse">
@@ -535,8 +524,8 @@ select.form-input{
       <div class="eyebrow" data-r>The System</div>
       <h2 class="sh" data-r data-d="1">BUILT ON<br><span class="out">DISCIPLINE</span></h2>
       <div class="pillars" data-r data-d="2">
-        <div class="pill"><span class="pill-ic">🏋️</span><div class="pill-t">Iron Room</div><div class="pill-s">Full free weights track systems</div></div>
-        <div class="pill"><span class="pill-ic">🥗</span><div class="pill-t">Nutrition Map</div><div class="pill-s">Blueprints custom to your framework</div></div>
+        <div class="pill"><span class="pill-ic">🏋️</span><div class="pill-t">Free Weights Area</div><div class="pill-s">Dumbbells and barbells room setup</div></div>
+        <div class="pill"><span class="pill-ic">🥗</span><div class="pill-t">Simple Nutrition</div><div class="pill-s">Healthy meal advice built for your life</div></div>
       </div>
     </div>
     <div class="edi-media" style="background-image:url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=900&auto=format&fit=crop')">
@@ -545,42 +534,74 @@ select.form-input{
   </div>
 </section>
 
-<!-- HIGH-IMPACT HARDWARE GALLERY SHOWCASE -->
+<!-- HEAVY LOGO-ALIGNED EQUIPMENT SHOWCASE RUNWAY (9 BRIGHT MATRICES) -->
 <section class="gallery-showcase" id="gallery">
   <div class="eyebrow" data-r>The Facility</div>
-  <h2 class="sh" data-r data-d="1">OUR <span class="hl">HARDWARE PORTFOLIO</span></h2>
+  <h2 class="sh" data-r data-d="1">OUR <span class="hl">EQUIPMENT PORTFOLIO</span></h2>
   <div class="gal-grid">
-    <div class="gal-box tall" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop');" data-r><div class="gal-title-tag">Main Lifting Track</div></div>
-    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop');" data-r data-d="1"><div class="gal-title-tag">Isolated Cables</div></div>
-    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=600&auto=format&fit=crop');" data-r data-d="2"><div class="gal-title-tag">Cardio Bay</div></div>
-    <div class="gal-box wide" style="background-image: url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop');" data-r><div class="gal-title-tag">Free Weight Arrays</div></div>
+    <div class="gal-box tall" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop');" data-r><div class="gal-title-tag">Professional Power Racks</div></div>
+    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop');" data-r data-d="1"><div class="gal-title-tag">Isolated Weight Machines</div></div>
+    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=600&auto=format&fit=crop');" data-r data-d="2"><div class="gal-title-tag">Stamina Treadmill Bay</div></div>
+    <div class="gal-box wide" style="background-image: url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop');" data-r><div class="gal-title-tag">Heavy Dumbbell Arrays</div></div>
+    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=600&auto=format&fit=crop');" data-r data-d="1"><div class="gal-title-tag">Functional Stretching Turf</div></div>
+    <div class="gal-box wide" style="background-image: url('https://images.unsplash.com/photo-1605296867304-46d5465a25f1?q=80&w=800&auto=format&fit=crop');" data-r data-d="2"><div class="gal-title-tag">Luxury Sauna Room</div></div>
+    <div class="gal-box wide" style="background-image: url('https://images.unsplash.com/photo-1546483875-5f01da75f8dd?q=80&w=800&auto=format&fit=crop');" data-r><div class="gal-title-tag">Olympic Barbell Benches</div></div>
+    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1571388208497-71bedc66e932?q=80&w=600&auto=format&fit=crop');" data-r data-d="1"><div class="gal-title-tag">Aerobics Studio Floor</div></div>
+    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1594882645126-14020914d58d?q=80&w=600&auto=format&fit=crop');" data-r data-d="2"><div class="gal-title-tag">Spin Bike Station</div></div>
   </div>
 </section>
 
-<!-- SERVICES CARDS MATRIX -->
+<!-- SERVICES CARDS MATRIX (EXPANDED TO 6 CAPACITY) -->
 <section class="services sec" id="services">
   <div class="eyebrow" data-r>What We Offer</div>
   <h2 class="sh" data-r data-d="1">PREMIUM <span class="out">CAPABILITIES</span></h2>
   <div class="srv-g">
+    <!-- Service 1 -->
     <div class="srv" data-r>
       <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1534258936925-c58bed479fcb?q=80&w=500&auto=format&fit=crop');"></div>
       <div class="srv-pad">
         <div class="srv-t">Weight Training</div>
-        <p class="srv-b">Barbells, specialized dynamic rows, and heavy iron stacks config metrics.</p>
+        <p class="srv-b">Clean free weights, heavy dumbbells, and targeted workout machines to build muscle or get toned safely.</p>
       </div>
     </div>
-    <div class="srv" data-r >=
+    <!-- Service 2 -->
+    <div class="srv" data-r data-d="1">
       <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1571019613576-2b22c76fd955?q=80&w=500&auto=format&fit=crop');"></div>
       <div class="srv-pad">
-        <div class="srv-t">Cardio Training</div>
-        <p class="srv-b">Premium performance mills built to hit caloric conversion targets.</p>
+        <div class="srv-t">Cardio Zone</div>
+        <p class="srv-b">High-quality treadmills, rowers, and exercise bikes to boost your stamina and drop extra weight easily.</p>
       </div>
     </div>
+    <!-- Service 3 -->
+    <div class="srv" data-r data-d="2">
+      <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=500&auto=format&fit=crop');"></div>
+      <div class="srv-pad">
+        <div class="srv-t">Aerobic Group Classes</div>
+        <p class="srv-b">High-energy fitness classes where you can sweat it out alongside a motivating community of active members.</p>
+      </div>
+    </div>
+    <!-- Service 4 -->
+    <div class="srv" data-r>
+      <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=500&auto=format&fit=crop');"></div>
+      <div class="srv-pad">
+        <div class="srv-t">Luxury Steam &amp; Sauna</div>
+        <p class="srv-b">Complimentary high-end steam bath and hot sauna access to help your muscles relax completely after a tough session.</p>
+      </div>
+    </div>
+    <!-- Service 5 -->
+    <div class="srv" data-r data-d="1">
+      <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1605296867304-46d5465a25f1?q=80&w=500&auto=format&fit=crop');"></div>
+      <div class="srv-pad">
+        <div class="srv-t">Aura Glow Salon &amp; Spa</div>
+        <p class="srv-b">Full beauty, massage, and therapeutic skin treatment services operating smoothly on our facility complex floor.</p>
+      </div>
+    </div>
+    <!-- Service 6 -->
     <div class="srv" data-r data-d="2">
       <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=500&auto=format&fit=crop');"></div>
       <div class="srv-pad">
         <div class="srv-t">Personal Training</div>
-        <p class="srv-b">Dedicated metabolic profiling structures overseen by certified coaches.</p>
+        <p class="srv-b">One-on-one help from certified floor coaches who guide your workout form and keep you on track every single day.</p>
       </div>
     </div>
   </div>
@@ -636,64 +657,11 @@ select.form-input{
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section class="testi sec">
-  <div class="eyebrow" data-r>Member Stories</div>
-  <h2 class="sh" data-r data-d="1">REAL RESULTS,<br><span class="out">REAL PEOPLE</span></h2>
-  <div class="tc-g">
-    <div class="tc" data-r>
-      <div class="tc-stars"><span></span><span></span><span></span><span></span><span></span></div>
-      <p class="tc-body">"Newest sensation in Buru Buru for good reason. The hardware setups are premium standard and the coaches ensure precision form metrics."</p>
-      <div class="tc-author">
-        <div class="tc-av">NM</div>
-        <div>
-          <div class="tc-name">Nico M.</div>
-          <div class="tc-role">Member since 2024</div>
-        </div>
-      </div>
-    </div>
-    <div class="tc" data-r data-d="1">
-      <div class="tc-stars"><span></span><span></span><span></span><span></span><span></span></div>
-      <p class="tc-body">"The Friday Blast sequence is elite level. Absolute high energy culture. Exactly what Eastlands needed."</p>
-      <div class="tc-author">
-        <div class="tc-av">AK</div>
-        <div>
-          <div class="tc-name">Amina K.</div>
-          <div class="tc-role">Elite Member</div>
-        </div>
-      </div>
-    </div>
-    <div class="tc" data-r data-d="2">
-      <div class="tc-stars"><span></span><span></span><span></span><span></span><span></span></div>
-      <p class="tc-body">"Nutrition consultations completely shifted my progress trajectory. Dropped fat while holding strength numbers smoothly."</p>
-      <div class="tc-author">
-        <div class="tc-av">BM</div>
-        <div>
-          <div class="tc-name">Brian M.</div>
-          <div class="tc-role">Champion Member</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COACHES -->
-<section class="trainers sec" id="trainers">
-  <div class="eyebrow" data-r>Meet the Team</div>
-  <h2 class="sh" data-r data-d="1">OUR <span class="out">COACHES</span></h2>
-  <div class="tr-g">
-    <div class="tr" data-r><div class="tr-av">TJ</div><div class="tr-name">Coach TJ</div><div class="tr-role">Head Coach</div><p class="tr-bio">Strength architect tracking free weights body transformations.</p><div class="tr-tags"><span class="tr-tag">Strength</span><span class="tr-tag">Nutrition</span></div></div>
-    <div class="tr" data-r data-d="1"><div class="tr-av">PR</div><div class="tr-name">Coach Prince</div><div class="tr-role">Group Lead</div><p class="tr-bio">The high energy spark pilot tracking Friday Blast matrices.</p><div class="tr-tags"><span class="tr-tag">HIIT</span><span class="tr-tag">Group</span></div></div>
-    <div class="tr" data-r data-d="2"><div class="tr-av">AS</div><div class="tr-name">Coach Asha</div><div class="tr-role">Habit Specialist</div><p class="tr-bio">Specialist in sustainable habit-building for beginner lifters.</p><div class="tr-tags"><span class="tr-tag">Cardio</span><span class="tr-tag">Habits</span></div></div>
-    <div class="tr" data-r data-d="3"><div class="tr-av">MK</div><div class="tr-name">Coach Marcus</div><div class="tr-role">S &amp; C Specialist</div><p class="tr-bio">Powerlifting mentor focus metrics on competitive performance.</p><div class="tr-tags"><span class="tr-tag">Power</span><span class="tr-tag">Sport</span></div></div>
-  </div>
-</section>
-
 <!-- MEMBERSHIP -->
 <section class="membership sec" id="membership">
   <div class="eyebrow" data-r>Flexible Plans</div>
   <h2 class="sh" data-r data-d="1">CHOOSE YOUR <span class="out">PLAN</span></h2>
-  <div class="plan-switch" data-r data-d="2">
+  <div class="plan-switch" data-r model data-d="2">
     <button class="ps-btn active" onclick="switchPlan('monthly',this)">Monthly</button>
     <button class="ps-btn" onclick="switchPlan('quarterly',this)">3 Months</button>
     <button class="ps-btn" onclick="switchPlan('biannual',this)">6 Months</button>
@@ -703,28 +671,28 @@ select.form-input{
   <!-- MONTHLY -->
   <div id="plan-monthly" class="plans-wrap">
     <div class="plan"><div class="plan-name">Starter</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">2,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">Frictionless access track</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 group classes/week</li><li class="on"><span class="chk con">✓</span>Locker access</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
-    <div class="plan feat"><div class="plan-rib">Most Popular</div><div class="plan-name">Elite</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">4,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">Best value roadmap metrics</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio equipment</li><li class="on"><span class="chk con">✓</span>Unlimited group classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="plan-btn pb-fire">Join Elite →</button></div>
+    <div class="plan feat"><div class="plan-rib">Most Popular</div><div class="plan-name">Elite</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">4,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">Best value roadmap metrics</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio equipment</li><li class="on"><span class="chk con">✓</span>Unlimited group classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="btn-dark">Join Elite →</button></div>
     <div class="plan"><div class="plan-name">Champion</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">7,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">Elite level lifters portfolio</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Unlimited group classes</li><li class="on"><span class="chk con">✓</span>Unlimited PT access</li><li class="on"><span class="chk con">✓</span>Full nutrition blueprints</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
   </div>
 
   <!-- QUARTERLY -->
   <div id="plan-quarterly" class="plans-wrap" style="display:none">
     <div class="plan"><div class="plan-name">Starter · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">6,750</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> upfront metrics</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 group classes/week</li><li class="on"><span class="chk con">✓</span>14-day freeze safety</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
-    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">12,150</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> value tier</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio matrices</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="plan-btn pb-fire">Join Elite →</button></div>
+    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">12,150</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> value tier</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio matrices</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="btn-dark">Join Elite →</button></div>
     <div class="plan"><div class="plan-name">Champion · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">20,250</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> complete pack</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Unlimited PT access</li><li class="on"><span class="chk con">✓</span>Full nutrition track</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
   </div>
 
   <!-- BIANNUAL -->
   <div id="plan-biannual" class="plans-wrap" style="display:none">
-    <div class="plan"><div class="plan-name">Starter · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">12,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> validation</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>30-day hold matrix</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
-    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">22,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> focus choice</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio matrices</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="plan-btn pb-gold">Join Elite →</button></div>
+    <div class="plan"><div class="plan-name">Starter · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">12,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> validation</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 group classes/week</li><li class="on"><span class="chk con">✓</span>30-day hold matrix</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
+    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">22,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> focus choice</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio matrices</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="btn-dark">Join Elite →</button></div>
     <div class="plan"><div class="plan-name">Champion · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">37,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> systems build</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Unlimited PT access</li><li class="on"><span class="chk con">✓</span>30-day hold matrix</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
   </div>
 
   <!-- ANNUAL -->
   <div id="plan-annual" class="plans-wrap" style="display:none">
-    <div class="plan"><div class="plan-name">Starter · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">22,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> full index</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Baseline guest passes</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
-    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">40,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> master runtime</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li><li class="on"><span class="chk con">✓</span>Priority scheduling</li></ul><button class="plan-btn pb-fire">Join Elite →</button></div>
+    <div class="plan"><div class="plan-name">Starter · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">22,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> full index</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 group classes/week</li><li class="on"><span class="chk con">✓</span>Baseline guest passes</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
+    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">40,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> master year</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio matrices</li><li class="on"><span class="chk con">✓</span>Unlimited club classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="btn-dark">Join Elite →</button></div>
     <div class="plan"><div class="plan-name">Champion · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">67,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> apex layout</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Unlimited PT access</li><li class="on"><span class="chk con">✓</span>Priority scheduling</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
   </div>
 </section>
@@ -767,9 +735,9 @@ select.form-input{
         <a href="https://facebook.com/p/TJ-and-U-Fitness-100064082797789" class="soc" target="_blank" rel="noopener">FB</a>
       </div>
     </div>
-    <div class="f-col"><h5>Navigate</h5><ul><li><a href="#about">About Us</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#schedule">Schedule</a></li><li><a href="#membership">Membership</a></li></ul></div>
+    <div class="f-col"><h5>Navigate</h5><ul><li><a href="#about">About Club</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#services">Services</a></li><li><a href="#schedule">Schedule</a></li><li><a href="#membership">Membership</a></li></ul></div>
     <div class="f-col"><h5>Capabilities</h5><ul><li><a href="#">Weight Room</a></li><li><a href="#">Cardio Track</a></li><li><a href="#">Coaching</a></li></ul></div>
-    <div class="f-col"><h5>Contact</h5><ul><li><a href="#">Rabai Rd, Phase 1</a></li><li><a href="#">Mon–Fri: 6AM–10PM</a></li></ul></div>
+    <div class="f-col"><h5>Contact</h5><ul><li><a href="#">Rabai Rd, Phase 1</a></li><li><a href="#">Mon–Fri: 6AM–10PM</a></li><li><a href="#">Sat: 7AM–8PM</a></li></ul></div>
   </div>
   <div class="foot-bot">
     <p class="f-copy">© 2026 <span class="hl">TJ &amp; U Fitness Club</span>. All rights reserved. Nairobi, Kenya.</p>
@@ -870,8 +838,9 @@ function openModal(tier) {
 document.getElementById('openModalBtn').addEventListener('click', () => openModal());
 document.getElementById('heroJoinBtn').addEventListener('click', () => openModal());
 document.getElementById('ctaJoinBtn').addEventListener('click', () => openModal());
-document.querySelectorAll('.plan-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
+document.querySelectorAll('.plan-btn, .btn-dark, .btn-fire').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
     const plan = btn.closest('.plan');
     if(plan){
       const name = plan.querySelector('.plan-name').textContent.toLowerCase();
