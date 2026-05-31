@@ -1,17 +1,17 @@
+cat > /mnt/user-data/outputs/tjandu-mobile-final.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<!-- Completely locks viewport scaling to prevent broken layouts and field auto-zooming on mobile devices -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>TJ & U Fitness Club — Buru Buru, Nairobi</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@500;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
 <style>
-/* ════════════════════════════════════════════
-   DESIGN SYSTEM — OLYMPIC GOLD & WHITE LUXURY
-════════════════════════════════════════════ */
+/* ══════════════════════════════════
+   DESIGN TOKENS — GOLD ON WHITE
+══════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --void:#050608;
@@ -22,434 +22,677 @@
   --smoke:#cbd5e1;
   --ash:#64748b;
   --chalk:#334155;
-  --white:#0f172a; 
+  --ink:#0f172a;
 
-  /* LOGO ACCENTS — Olympic Gold & Metallic Tone */
-  --fire:#d4af37;
-  --fire-hot:#e5c158;
-  --fire-glow:rgba(212,175,55,.15);
-  --fire-soft:rgba(212,175,55,.06);
+  --gold:#d4af37;
+  --gold-hot:#e5c158;
+  --gold-glow:rgba(212,175,55,.18);
+  --gold-soft:rgba(212,175,55,.07);
 
   --ff-d:'Bebas Neue',sans-serif;
   --ff-b:'Syne',sans-serif;
   --ff-m:'Space Mono',monospace;
 
-  --glass:rgba(255,255,255,.95);
-  --glass-b:rgba(212,175,55,.2);
+  /* Mobile-safe spacing scale */
+  --pad-x:clamp(1.2rem, 5vw, 5rem);
+  --sec-y:clamp(4rem, 10vw, 10rem);
 }
 
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:var(--ff-b);font-weight:500;overflow-x:hidden;line-height:1.6}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--ff-b);font-weight:500;overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased}
 a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%;height:auto}
 
-/* Scrollbar */
-::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--slab)}
-::-webkit-scrollbar-thumb{background:var(--fire)}
+::-webkit-scrollbar-thumb{background:var(--gold)}
 
-/* ════ LOADING SCREEN ════ */
+/* ══════════════════════════════════
+   LOADER
+══════════════════════════════════ */
 #loader{
   position:fixed;inset:0;background:var(--bg);z-index:99999;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;
-  transition:opacity .6s ease, visibility .6s ease;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;
+  transition:opacity .5s ease,visibility .5s ease;
 }
-#loader.gone{opacity:0;visibility:hidden}
-.loader-logo{
-  font-family:var(--ff-d);font-size:4rem;letter-spacing:.05em;
-  color:var(--void);display:flex;align-items:center;gap:0.8rem;
-}
-.loader-logo img{height:70px;width:auto;}
-.loader-bar{
-  width:160px;height:3px;background:var(--seam);
-  position:relative;overflow:hidden;
-}
-.loader-bar::after{
-  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
-  background:var(--fire);
-  animation:loaderFill 1.2s cubic-bezier(.16,1,.3,1) forwards;
-}
-@keyframes loaderFill{to{left:0}}
+#loader.gone{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{font-family:var(--ff-d);font-size:clamp(2.5rem,10vw,4rem);letter-spacing:.06em;color:var(--void)}
+.loader-logo span{color:var(--gold)}
+.loader-bar{width:160px;height:3px;background:var(--seam);position:relative;overflow:hidden}
+.loader-bar::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:var(--gold);animation:lf 1.2s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes lf{to{left:0}}
+.loader-tag{font-family:var(--ff-m);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ash)}
 
-/* ════ NAV ════ */
+/* ══════════════════════════════════
+   NAV
+══════════════════════════════════ */
 #nav{
   position:fixed;top:0;left:0;right:0;z-index:800;
   display:flex;align-items:center;justify-content:space-between;
-  padding:2.5rem 5rem;
-  transition:all .4s cubic-bezier(.16,1,.3,1);
+  padding:1.4rem var(--pad-x);
+  transition:all .35s cubic-bezier(.16,1,.3,1);
 }
 #nav.on{
-  padding:1rem 5rem;
   background:rgba(255,255,255,.97);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-bottom:1px solid var(--seam);
-  box-shadow:0 10px 40px rgba(0,0,0,.03);
+  box-shadow:0 4px 24px rgba(0,0,0,.05);
+  padding:.9rem var(--pad-x);
 }
 .nav-logo{
-  font-family:var(--ff-d);font-size:1.9rem;letter-spacing:.04em;
-  display:flex;align-items:center;gap:.6rem;color:var(--void);
+  font-family:var(--ff-d);font-size:clamp(1.3rem,4vw,1.75rem);
+  letter-spacing:.04em;display:flex;align-items:center;gap:.4rem;color:var(--void);
+  flex-shrink:0;
 }
-.nav-logo img{height:44px;width:auto;object-fit:contain;vertical-align:middle;}
-.nav-logo .o{color:var(--fire)}
+.nav-logo .o{color:var(--gold)}
 .nav-links{
-  display:flex;gap:3rem;list-style:none;
-  font-family:var(--ff-m);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
+  display:flex;gap:2rem;list-style:none;
+  font-family:var(--ff-m);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
   color:var(--ash);font-weight:700;
 }
-.nav-links a{transition:color .2s}
-.nav-links a:hover{color:var(--fire)}
-.nav-btn{
-  font-family:var(--ff-m);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;
-  background:var(--void);color:var(--bg);
-  padding:.7rem 2.2rem;border:none;cursor:pointer;
-  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
-  transition:all .25s;
-}
-.nav-btn:hover{background:var(--fire);color:var(--void);transform:translateY(-1px);box-shadow:0 8px 24px var(--fire-glow)}
+.nav-links a:hover{color:var(--gold)}
 
-/* ════ HERO ENGINE — MOBILE VIEW SAFE ════ */
+/* Mobile hamburger */
+.nav-ham{
+  display:none;flex-direction:column;gap:5px;
+  background:none;border:none;cursor:pointer;padding:4px;
+}
+.nav-ham span{
+  display:block;width:24px;height:2px;background:var(--void);
+  transition:all .25s ease;transform-origin:center;
+}
+#nav.menu-open .nav-ham span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+#nav.menu-open .nav-ham span:nth-child(2){opacity:0;transform:scaleX(0)}
+#nav.menu-open .nav-ham span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* Mobile drawer */
+.nav-drawer{
+  position:fixed;top:0;left:0;right:0;bottom:0;
+  background:var(--bg);z-index:790;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+}
+.nav-drawer.open{opacity:1;pointer-events:auto}
+.nav-drawer a{
+  font-family:var(--ff-d);font-size:clamp(2.5rem,10vw,4rem);letter-spacing:.06em;
+  color:var(--void);transition:color .2s;
+}
+.nav-drawer a:hover{color:var(--gold)}
+.nav-drawer .close-x{
+  position:absolute;top:1.4rem;right:var(--pad-x);
+  background:none;border:none;font-family:var(--ff-m);font-size:.8rem;
+  letter-spacing:.1em;color:var(--ash);cursor:pointer;font-weight:700;
+}
+
+.nav-btn{
+  font-family:var(--ff-m);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  background:var(--void);color:var(--bg);
+  padding:.6rem 1.5rem;border:none;cursor:pointer;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  transition:all .25s;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--gold);color:var(--void)}
+
+/* ══════════════════════════════════
+   HERO — FULL VIEWPORT PHOTO SPLIT
+══════════════════════════════════ */
 .hero{
-  min-height:100vh;
   min-height:100svh;
   position:relative;
-  display:grid;grid-template-columns:1fr 1fr;
-  background:var(--bg);padding:0;
+  display:flex;align-items:flex-end;
+  overflow:hidden;
 }
-.hero-left-content{
-  display:flex;flex-direction:column;justify-content:center;
-  padding:10rem 5rem 4rem;position:relative;z-index:3;background:var(--bg);
+/* Full-bleed photo background on mobile; splits on desktop */
+.hero-bg{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,.92) 35%, rgba(255,255,255,.5) 65%, rgba(255,255,255,.15) 100%),
+    url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=85&w=1600&auto=format&fit=crop');
+  background-size:cover;background-position:center top;
 }
-.hero-right-display {
-  position:relative;overflow:hidden;width:100%;height:100%;
-  background-image:url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1500&auto=format&fit=crop');
-  background-size:cover;background-position:center;
+.hero-content{
+  position:relative;z-index:2;
+  width:100%;
+  padding:8rem var(--pad-x) clamp(3rem,8vw,6rem);
+  max-width:820px;
 }
-.hero-right-display::before {
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to right, var(--bg) 0%, transparent 15%);
-}
-
 .hero-kicker{
-  display:inline-flex;align-items:center;gap:.9rem;
-  font-family:var(--ff-m);font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;
-  color:var(--fire);margin-bottom:1.5rem;font-weight:700;
+  display:inline-flex;align-items:center;gap:.8rem;
+  font-family:var(--ff-m);font-size:clamp(.58rem,.9vw+.3rem,.65rem);letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.2rem;font-weight:700;
 }
-.kd{width:8px;height:8px;background:var(--fire);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
-
+.kd{width:7px;height:7px;background:var(--gold);clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0 75%,0 25%);flex-shrink:0}
 .hero-h1{
-  font-family:var(--ff-d);font-size:clamp(4.2rem,8.5vw,11rem);
-  line-height:.88;letter-spacing:0;color:var(--void);margin-bottom:2rem;
+  font-family:var(--ff-d);
+  font-size:clamp(4rem,14vw,11rem);
+  line-height:.86;color:var(--void);margin-bottom:1.5rem;
 }
-.hero-h1 .fire{color:var(--fire);}
+.hero-h1 .fire{color:var(--gold)}
 .hero-h1 .out{-webkit-text-stroke:2px var(--void);color:transparent}
-
 .hero-sub{
-  font-size:1.05rem;color:var(--chalk);max-width:480px;
-  line-height:1.65;margin-bottom:3.5rem;
-  padding-left:1.4rem;border-left:4px solid var(--fire);font-weight:500;
+  font-size:clamp(.9rem,1.5vw+.3rem,1.05rem);
+  color:var(--chalk);max-width:500px;line-height:1.65;
+  margin-bottom:2.5rem;
+  padding-left:1.2rem;border-left:4px solid var(--gold);
 }
-.hero-btns{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:4rem}
+.hero-btns{display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:clamp(2rem,5vw,4rem)}
+.hero-stats{
+  display:flex;flex-wrap:wrap;gap:1.5rem clamp(2rem,5vw,4rem);
+  border-top:1px solid var(--seam);padding-top:2rem;
+}
+.hs-n{font-family:var(--ff-d);font-size:clamp(2.2rem,7vw,3.5rem);line-height:1;color:var(--void)}
+.hs-l{font-family:var(--ff-m);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ash);margin-top:.3rem;font-weight:700}
 
-.hero-stats{display:flex;border-top:1px solid var(--seam);padding-top:2.5rem;gap:4rem;}
-.hs{flex:1;}
-.hs-n{font-family:var(--ff-d);font-size:3.5rem;line-height:1;color:var(--void)}
-.hs-l{font-family:var(--ff-m);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--ash);margin-top:.4rem;font-weight:700}
-
-/* ════ RUNWAY MARQUEE TICKER ════ */
-.mq{overflow:hidden;background:var(--void);padding:1.2rem 0;position:relative;z-index:10;}
-.mq-track{display:flex;white-space:nowrap;animation:mq 24s linear infinite}
+/* ══════════════════════════════════
+   MARQUEE
+══════════════════════════════════ */
+.mq{overflow:hidden;background:var(--void);padding:1rem 0;position:relative;z-index:10}
+.mq-track{display:flex;white-space:nowrap;animation:mq 20s linear infinite}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .mq-item{
-  font-family:var(--ff-d);font-size:1.3rem;letter-spacing:.18em;
-  color:var(--fire);padding:0 2.5rem;display:inline-flex;align-items:center}
-.mq-item::after{content:'✦';color:rgba(255,255,255,.2);font-size:.7rem;margin-left:2.5rem}
+  font-family:var(--ff-d);font-size:clamp(.9rem,2.5vw,1.2rem);letter-spacing:.18em;
+  color:var(--gold);padding:0 2rem;display:inline-flex;align-items:center;
+}
+.mq-item::after{content:'✦';color:rgba(255,255,255,.2);font-size:.6rem;margin-left:2rem}
 
-/* ════ SECTION SPACING DECORATION UTILS ════ */
-.sec{padding:10rem 5rem}
+/* ══════════════════════════════════
+   SECTION UTILS
+══════════════════════════════════ */
+.sec{padding:var(--sec-y) var(--pad-x)}
 .eyebrow{
   display:inline-flex;align-items:center;gap:.8rem;
-  font-family:var(--ff-m);font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;
-  color:var(--fire);margin-bottom:1.5rem;font-weight:700;
+  font-family:var(--ff-m);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.2rem;font-weight:700;
 }
-.eyebrow::before{content:'';width:2.5rem;height:1px;background:var(--fire);display:block}
-.sh{font-family:var(--ff-d);font-size:clamp(3.2rem,6.5vw,7rem);line-height:.9;letter-spacing:0;color:var(--void)}
+.eyebrow::before{content:'';width:2rem;height:1px;background:var(--gold);display:block;flex-shrink:0}
+.sh{
+  font-family:var(--ff-d);
+  font-size:clamp(2.4rem,8vw,6.5rem);
+  line-height:.9;color:var(--void);
+}
 .sh .out{-webkit-text-stroke:2px var(--void);color:transparent}
-.sh .hl{color:var(--fire);}
+.sh .hl{color:var(--gold)}
 
-/* ════ PHOTOGRAPHY ABOUT GRID ════ */
+/* ══════════════════════════════════
+   BUTTONS
+══════════════════════════════════ */
+.btn-primary{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--void);color:var(--bg);
+  padding:.9rem 2.2rem;
+  font-family:var(--ff-m);font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  border:none;cursor:pointer;transition:all .25s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.btn-primary:hover,.btn-primary:active{background:var(--gold);color:var(--void);transform:translateY(-2px);box-shadow:0 8px 24px var(--gold-glow)}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:transparent;color:var(--void);
+  padding:.9rem 2.2rem;border:1.5px solid var(--void);
+  font-family:var(--ff-m);font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  cursor:pointer;transition:all .25s;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-outline:hover,.btn-outline:active{background:var(--void);color:var(--bg)}
+
+/* ══════════════════════════════════
+   ABOUT — EDITORIAL ROWS
+══════════════════════════════════ */
 .about{background:var(--bg);padding:0}
-.edi-row{display:grid;grid-template-columns:1.1fr 0.9fr;min-height:70vh;align-items:stretch}
-.edi-row.reverse {grid-template-columns: 0.9fr 1.1fr;}
-.edi-media{position:relative;overflow:hidden;background-size:cover;background-position:center;width:100%;min-height:450px;}
+.edi-row{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;min-height:clamp(400px,60vh,700px)}
+.edi-media{
+  position:relative;overflow:hidden;
+  background-size:cover;background-position:center;
+  min-height:300px;
+}
 .edi-media-num{
-  position:absolute;bottom:2rem;left:2rem;z-index:3;
-  font-family:var(--ff-d);font-size:9rem;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(0,0,0,.15);
+  position:absolute;bottom:1.5rem;left:1.5rem;z-index:2;
+  font-family:var(--ff-d);font-size:clamp(5rem,12vw,9rem);
+  line-height:1;color:transparent;-webkit-text-stroke:1px rgba(0,0,0,.12);
+  user-select:none;
 }
-.edi-content{padding:6rem 5rem;background:var(--slab);display:flex;flex-direction:column;justify-content:center;}
-.ab-p{font-size:1.05rem;color:var(--chalk);line-height:1.75;margin-top:1.5rem;}
-
-.pillars{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
-.pill{background:var(--bg);padding:2rem;border:1px solid var(--seam);transition:all .3s ease;}
-.pill:hover{border-color:var(--fire);transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,0.02)}
-.pill-ic{font-size:1.8rem;display:block;margin-bottom:.8rem}
-.pill-t{font-family:var(--ff-m);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--void);margin-bottom:.4rem;font-weight:700}
-.pill-s{font-size:.9rem;color:var(--ash)}
-
-/* ════ EXPANDED 9-BOX PRESTIGE GALLERY RUNWAY (EQUIPMENT VARIETY) ════ */
-.gallery-showcase {padding:10rem 5rem; background:var(--bg);}
-.gal-grid {display:grid; grid-template-columns: repeat(3, 1fr); gap:1.5rem; margin-top:4rem;}
-.gal-box {
-  background-size:cover; background-position:center; position:relative; overflow:hidden;
-  border:1px solid var(--seam); transition:transform 0.5s cubic-bezier(.16,1,.3,1); height:280px;
+.edi-content{
+  padding:clamp(3rem,6vw,7rem) clamp(1.5rem,4vw,5rem);
+  background:var(--slab);
+  display:flex;flex-direction:column;justify-content:center;
 }
-.gal-box:hover {transform:scale(1.03); border-color:var(--fire); box-shadow:0 15px 30px rgba(0,0,0,0.08);}
-.gal-box.tall {grid-row: span 2; height: 575px;}
-.gal-box.wide {grid-column: span 2;}
-.gal-title-tag {
-  position:absolute; bottom:1.5rem; left:1.5rem; background:var(--void); color:#fff;
-  font-family:var(--ff-m); font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase;
-  padding:0.4rem 1rem; font-weight:700;
+.ab-p{font-size:clamp(.88rem,1.5vw+.3rem,1.05rem);color:var(--chalk);line-height:1.78;margin-top:1.2rem}
+
+.pillars{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+.pill{
+  background:var(--bg);padding:1.5rem;border:1px solid var(--seam);
+  transition:all .3s ease;border-radius:2px;
+}
+.pill:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.04)}
+.pill-ic{font-size:1.5rem;display:block;margin-bottom:.6rem}
+.pill-t{font-family:var(--ff-m);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--void);margin-bottom:.3rem;font-weight:700}
+.pill-s{font-size:.82rem;color:var(--ash)}
+
+/* ══════════════════════════════════
+   GALLERY — MASONRY GRID
+══════════════════════════════════ */
+.gallery-sec{background:var(--slab);padding:var(--sec-y) var(--pad-x)}
+.gal-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:auto;
+  gap:1rem;margin-top:3rem;
+}
+/* Each box is an image with overlay label */
+.gal-box{
+  position:relative;overflow:hidden;
+  background-color:var(--plate);
+  background-size:cover;background-position:center;
+  border:1px solid var(--seam);
+  transition:transform .45s cubic-bezier(.16,1,.3,1),border-color .3s;
+  cursor:default;
+}
+/* Force visible height on all boxes */
+.gal-box::before{content:'';display:block;padding-bottom:75%} /* 4:3 ratio */
+.gal-box.tall::before{padding-bottom:160%}
+.gal-box.wide{grid-column:span 2}
+.gal-box.wide::before{padding-bottom:37%}
+
+/* Make background fill the space */
+.gal-box-inner{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  transition:transform .5s ease;
+}
+.gal-box:hover .gal-box-inner{transform:scale(1.04)}
+.gal-box:hover{border-color:var(--gold);box-shadow:0 12px 32px rgba(0,0,0,.1)}
+/* Dark gradient so label is readable */
+.gal-box-inner::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,.65) 0%,rgba(0,0,0,.1) 60%,transparent 100%);
+}
+.gal-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:.9rem 1rem;z-index:2;
+  font-family:var(--ff-m);font-size:clamp(.52rem,.7vw+.3rem,.62rem);
+  letter-spacing:.12em;text-transform:uppercase;
+  color:#fff;font-weight:700;
 }
 
-/* ════ SERVICES DEEP EXPANSION — 6 DISTINCT TIER SLABS ════ */
-.services{background:var(--slab)}
-.srv-g{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:5rem}
-.srv{background:var(--bg); border:1px solid var(--seam); overflow:hidden; transition:all 0.4s ease;}
-.srv:hover {transform:translateY(-8px); border-color:var(--fire); box-shadow:0 20px 40px rgba(212,175,55,0.08);}
-.srv-img-banner {height:220px; width:100%; background-size:cover; background-position:center;}
-.srv-pad {padding:2.5rem;}
-.srv-t{font-family:var(--ff-d);font-size:2.2rem;letter-spacing:.02em;color:var(--void);margin-bottom:.5rem}
-.srv-b{font-size:.92rem;color:var(--ash);line-height:1.65}
+/* ══════════════════════════════════
+   SERVICES — IMAGE CARDS
+══════════════════════════════════ */
+.services{background:var(--bg);padding:var(--sec-y) var(--pad-x)}
+.srv-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.srv{
+  background:var(--slab);border:1px solid var(--seam);overflow:hidden;
+  transition:all .4s cubic-bezier(.16,1,.3,1);
+}
+.srv:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 16px 40px rgba(212,175,55,.1)}
+.srv-img{
+  width:100%;
+  aspect-ratio:16/10;
+  background-size:cover;background-position:center;
+  background-color:var(--plate);
+  flex-shrink:0;
+}
+.srv-pad{padding:1.8rem}
+.srv-t{font-family:var(--ff-d);font-size:clamp(1.4rem,3vw,2rem);letter-spacing:.02em;color:var(--void);margin-bottom:.4rem}
+.srv-b{font-size:clamp(.82rem,1.2vw+.3rem,.9rem);color:var(--ash);line-height:1.65}
 
-/* ════ SCHEDULE TIMETABLE MODULE ════ */
-.schedule{background:var(--bg)}
-.sch-tabs{display:flex;gap:1px;background:var(--seam);border:1px solid var(--seam);margin-top:4rem;overflow-x:auto}
+/* ══════════════════════════════════
+   SCHEDULE
+══════════════════════════════════ */
+.schedule{background:var(--slab);padding:var(--sec-y) var(--pad-x)}
+.sch-tabs{
+  display:flex;gap:1px;background:var(--seam);border:1px solid var(--seam);
+  margin-top:3rem;overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.sch-tabs::-webkit-scrollbar{display:none}
 .sch-tab{
-  flex:1;min-width:85px;padding:1.4rem 1rem;text-align:center;
-  font-family:var(--ff-m);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--ash);background:var(--slab);cursor:pointer;border:none;transition:all .25s;font-weight:700;
+  flex:1;min-width:72px;padding:1.1rem .8rem;text-align:center;
+  font-family:var(--ff-m);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ash);background:var(--bg);cursor:pointer;border:none;font-weight:700;
+  transition:all .2s;white-space:nowrap;-webkit-tap-highlight-color:transparent;
 }
-.sch-tab.active{background:var(--void);color:var(--fire)}
+.sch-tab.active{background:var(--void);color:var(--gold)}
 .sch-tab:hover:not(.active){background:var(--plate);color:var(--void)}
-.sch-panel{display:none;margin-top:2rem}
+.sch-panel{display:none;margin-top:1.5rem}
 .sch-panel.active{
   display:grid;grid-template-columns:1fr 1fr;gap:1px;
-  background:var(--seam);border:1px solid var(--seam);box-shadow:0 15px 40px rgba(0,0,0,.02);
+  background:var(--seam);border:1px solid var(--seam);
 }
-.sch-row{background:var(--bg);padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;transition:all .3s ease}
+.sch-row{
+  background:var(--bg);padding:1.5rem 2rem;
+  display:flex;align-items:center;gap:1.5rem;
+  transition:background .25s;
+}
 .sch-row:hover{background:var(--slab)}
-.sch-time{font-family:var(--ff-m);font-size:.78rem;letter-spacing:.05em;color:var(--void);min-width:110px;font-weight:700}
+.sch-time{font-family:var(--ff-m);font-size:.7rem;letter-spacing:.04em;color:var(--void);min-width:105px;flex-shrink:0;font-weight:700}
 .sch-info{flex:1}
-.sch-name{font-family:var(--ff-d);font-size:1.5rem;letter-spacing:.02em;color:var(--void);margin-bottom:.2rem}
-.sch-coach{font-size:.9rem;color:var(--ash);font-weight:500}
-.sch-badge{
-  font-family:var(--ff-m);font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;
-  padding:.3rem .9rem;border:1px solid;flex-shrink:0;background:var(--slab);font-weight:700;
-}
+.sch-name{font-family:var(--ff-d);font-size:clamp(1.1rem,2.5vw,1.4rem);color:var(--void);margin-bottom:.15rem}
+.sch-coach{font-size:.82rem;color:var(--ash)}
+.sch-badge{font-family:var(--ff-m);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;padding:.25rem .7rem;border:1px solid;flex-shrink:0;font-weight:700}
 .sb-all{color:var(--chalk);border-color:var(--smoke)}
-.sb-beg{color:#00a3cc;border-color:rgba(0,163,204,.3)}
-.sb-int{color:var(--fire);border-color:rgba(212,175,55,.4)}
-.sb-adv{color:#cc0000;border-color:rgba(204,0,0,.3)}
-.sb-sig{color:var(--void);border-color:var(--void);background:var(--fire-soft)}
+.sb-beg{color:#0284c7;border-color:rgba(2,132,199,.3)}
+.sb-int{color:var(--gold);border-color:rgba(212,175,55,.4)}
+.sb-adv{color:#dc2626;border-color:rgba(220,38,38,.3)}
+.sb-sig{color:var(--void);border-color:var(--gold);background:var(--gold-soft)}
 
-/* ════ TESTIMONIALS ════ */
-.testi{background:var(--slab)}
-.tc-g{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:5rem}
-.tc{background:var(--bg);border:1px solid var(--seam);padding:3.5rem 2.5rem;position:relative;overflow:hidden;}
-.tc:hover{border-color:var(--fire);box-shadow:0 15px 40px rgba(0,0,0,0.02)}
-.tc::after{content:'\201C';font-family:var(--ff-d);font-size:14rem;line-height:1;color:rgba(0,0,0,.01);position:absolute;bottom:-3.5rem;right:.5rem;pointer-events:none}
-.tc-stars{display:flex;gap:.3rem;margin-bottom:1.5rem}
-.tc-stars span{width:14px;height:14px;background:var(--fire);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);display:inline-block}
-.tc-body{font-size:.95rem;color:var(--chalk);line-height:1.75;font-style:italic;margin-bottom:2.2rem;font-weight:500}
-.tc-author{display:flex;align-items:center;gap:1rem}
-.tc-av{width:46px;height:46px;background:var(--slab);border:2px solid var(--fire);display:flex;align-items:center;justify-content:center;font-family:var(--ff-d);font-size:1.2rem;color:var(--fire);flex-shrink:0}
-.tc-name{font-family:var(--ff-m);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--void);font-weight:700}
-.tc-role{font-size:.75rem;color:var(--ash);margin-top:.15rem;font-weight:500}
+/* ══════════════════════════════════
+   TESTIMONIALS
+══════════════════════════════════ */
+.testi{background:var(--bg);padding:var(--sec-y) var(--pad-x)}
+.tc-g{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.tc{background:var(--slab);border:1px solid var(--seam);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:all .3s}
+.tc:hover{border-color:var(--gold);box-shadow:0 12px 32px rgba(0,0,0,.04)}
+.tc::after{content:'\201C';font-family:var(--ff-d);font-size:12rem;line-height:1;color:rgba(0,0,0,.02);position:absolute;bottom:-3rem;right:.5rem;pointer-events:none}
+.tc-stars{display:flex;gap:.25rem;margin-bottom:1.2rem}
+.tc-stars span{width:13px;height:13px;background:var(--gold);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);display:inline-block}
+.tc-body{font-size:.92rem;color:var(--chalk);line-height:1.7;font-style:italic;margin-bottom:1.8rem}
+.tc-author{display:flex;align-items:center;gap:.8rem}
+.tc-av{width:42px;height:42px;background:var(--plate);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--ff-d);font-size:1.1rem;color:var(--gold);flex-shrink:0}
+.tc-name{font-family:var(--ff-m);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--void);font-weight:700}
+.tc-role{font-size:.72rem;color:var(--ash)}
 
-/* ════ COACHES ════ */
-.trainers{background:var(--slab)}
-.tr-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--seam);border:1px solid var(--seam);margin-top:5rem}
-.tr{background:var(--bg);padding:4rem 2.5rem;transition:background .35s}
+/* ══════════════════════════════════
+   COACHES
+══════════════════════════════════ */
+.trainers{background:var(--slab);padding:var(--sec-y) var(--pad-x)}
+.tr-g{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--seam);border:1px solid var(--seam);margin-top:3rem}
+.tr{background:var(--bg);padding:3rem 2rem;position:relative;overflow:hidden;transition:background .3s}
 .tr:hover{background:var(--slab)}
-.tr-av{
-  width:80px;height:80px;background:var(--slab);border:2px solid var(--void);
-  display:flex;align-items:center;justify-content:center;font-family:var(--ff-d);font-size:2rem;color:var(--void);margin-bottom:2rem;
+.tr::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+.tr:hover::after{transform:scaleX(1)}
+.tr-av{width:68px;height:68px;background:var(--plate);border:2px solid var(--void);display:flex;align-items:center;justify-content:center;font-family:var(--ff-d);font-size:1.8rem;color:var(--void);margin-bottom:1.5rem}
+.tr-name{font-family:var(--ff-d);font-size:clamp(1.3rem,3vw,1.7rem);color:var(--void);margin-bottom:.2rem}
+.tr-role{font-family:var(--ff-m);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-weight:700}
+.tr-bio{font-size:.85rem;color:var(--ash);line-height:1.65}
+.tr-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1.2rem}
+.tr-tag{font-family:var(--ff-m);font-size:.52rem;letter-spacing:.05em;text-transform:uppercase;padding:.2rem .55rem;background:var(--plate);color:var(--chalk);font-weight:700}
+
+/* ══════════════════════════════════
+   MEMBERSHIP
+══════════════════════════════════ */
+.membership{background:var(--bg);padding:var(--sec-y) var(--pad-x)}
+.plan-switch{
+  display:flex;gap:1px;background:var(--seam);border:1px solid var(--seam);
+  margin-top:2.5rem;width:100%;max-width:500px;
 }
-.tr-name{font-family:var(--ff-d);font-size:1.8rem;letter-spacing:.02em;color:var(--void);margin-bottom:.2rem}
-.tr-role{font-family:var(--ff-m);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--fire);margin-bottom:1.4rem;font-weight:700}
-.tr-bio{font-size:.9rem;color:var(--ash);line-height:1.7;font-weight:500}
-.tr-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.5rem}
-.tr-tag{font-family:var(--ff-m);font-size:.54rem;letter-spacing:.06em;text-transform:uppercase;padding:.25rem .65rem;background:var(--slab);color:var(--chalk);font-weight:700}
-
-/* ════ MEMBERSHIP plans ════ */
-.membership{background:var(--bg)}
-.plan-switch{display:flex;gap:1px;background:var(--seam);border:1px solid var(--seam);margin:4rem 0 0;width:fit-content;}
-.ps-btn{font-family:var(--ff-m);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;padding:1rem 2.4rem;background:var(--slab);color:var(--ash);cursor:pointer;border:none;transition:all .25s;font-weight:700}
-.ps-btn.active{background:var(--void);color:var(--fire);box-shadow:0 4px 15px rgba(0,0,0,0.1)}
-
-.plans-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--seam);border:1px solid var(--seam);margin-top:2rem;}
-.plan{background:var(--bg);padding:5rem 3.5rem;position:relative;transition:background .3s}
+.ps-btn{
+  flex:1;font-family:var(--ff-m);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;
+  padding:.9rem .5rem;background:var(--slab);color:var(--ash);cursor:pointer;border:none;
+  font-weight:700;transition:all .2s;white-space:nowrap;-webkit-tap-highlight-color:transparent;
+}
+.ps-btn.active{background:var(--void);color:var(--gold)}
+.plans-wrap{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--seam);border:1px solid var(--seam);margin-top:1.5rem;
+}
+.plan{background:var(--bg);padding:3.5rem 2.5rem;position:relative;transition:background .25s}
 .plan:hover{background:var(--slab)}
-.plan.feat{background:var(--slab);border-left:1px solid var(--fire);border-right:1px solid var(--fire);z-index:5;box-shadow:0 15px 40px rgba(0,0,0,0.03)}
-.plan-rib{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--fire);color:var(--bg);font-family:var(--ff-m);font-size:.56rem;letter-spacing:.25em;text-transform:uppercase;font-weight:700;padding:.4rem 2rem;white-space:nowrap}
-.plan-name{font-family:var(--ff-m);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:var(--ash);margin-bottom:2.2rem;font-weight:700}
+.plan.feat{background:var(--slab);border-left:1px solid var(--gold);border-right:1px solid var(--gold)}
+.plan-rib{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  background:var(--gold);color:var(--void);
+  font-family:var(--ff-m);font-size:.54rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;
+  padding:.3rem 1.5rem;white-space:nowrap;
+}
+.plan-name{font-family:var(--ff-m);font-size:.65rem;letter-spacing:.28em;text-transform:uppercase;color:var(--ash);margin-bottom:1.8rem;font-weight:700}
 .plan.feat .plan-name{margin-top:1.2rem}
-.plan-price{display:flex;align-items:baseline;gap:.25rem;margin-bottom:.5rem}
-.plan-cur{font-size:1rem;color:var(--fire);font-weight:700}
-.plan-amt{font-family:var(--ff-d);font-size:4.8rem;line-height:1;color:var(--void)}
-.plan-per{font-size:.75rem;color:var(--ash);align-self:flex-end;padding-bottom:.6rem;font-weight:700}
-.plan-desc{font-size:.9rem;color:var(--ash);margin-bottom:2.5rem;font-weight:500}
-.plan-desc .save{color:var(--fire);font-weight:700}
-.plan-line{height:1px;background:var(--seam);margin-bottom:2.2rem}
-.plan-feats{list-style:none;display:flex;flex-direction:column;gap:1.1rem;margin-bottom:3rem}
-.plan-feats li{display:flex;align-items:flex-start;gap:.8rem;font-size:.92rem;color:var(--ash);font-weight:500}
+.plan-price{display:flex;align-items:baseline;gap:.2rem;margin-bottom:.4rem}
+.plan-cur{font-size:.95rem;color:var(--gold);font-weight:700}
+.plan-amt{font-family:var(--ff-d);font-size:clamp(3rem,6vw,4.5rem);line-height:1;color:var(--void)}
+.plan-per{font-size:.72rem;color:var(--ash);align-self:flex-end;padding-bottom:.4rem;font-weight:700}
+.plan-desc{font-size:.82rem;color:var(--ash);margin-bottom:2rem}
+.plan-desc .save{color:var(--gold);font-weight:700}
+.plan-line{height:1px;background:var(--seam);margin-bottom:1.8rem}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:.9rem;margin-bottom:2.5rem}
+.plan-feats li{display:flex;align-items:flex-start;gap:.7rem;font-size:.88rem;color:var(--ash)}
 .plan-feats li.on{color:var(--chalk)}
-.chk{width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.65rem;flex-shrink:0;margin-top:3px}
-.con{background:var(--void);color:var(--fire);font-weight:700}
+.chk{width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-size:.62rem;flex-shrink:0;margin-top:2px}
+.con{background:var(--void);color:var(--gold);font-weight:700}
 .coff{border:1px solid var(--smoke);color:var(--smoke)}
-.plan-btn{width:100%;padding:1rem;font-family:var(--ff-m);font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;border:none;cursor:pointer;transition:all .25s}
-.pb-fire{background:var(--void);color:var(--fire);clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
-.pb-fire:hover{background:var(--fire);color:var(--void);transform:translateY(-1px);box-shadow:0 8px 20px var(--fire-glow)}
-.pb-ghost{background:transparent;color:var(--void);border:1px solid var(--seam);font-weight:700}
-.pb-ghost:hover{border-color:var(--fire);color:var(--fire);background:var(--fire-soft)}
+.plan-btn{
+  width:100%;padding:.9rem;
+  font-family:var(--ff-m);font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  border:none;cursor:pointer;transition:all .22s;
+  -webkit-tap-highlight-color:transparent;
+}
+.pb-fire{background:var(--void);color:var(--gold);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+.pb-fire:hover,.pb-fire:active{background:var(--gold);color:var(--void)}
+.pb-ghost{background:transparent;color:var(--void);border:1px solid var(--seam)}
+.pb-ghost:hover,.pb-ghost:active{border-color:var(--gold);color:var(--gold)}
 
-/* ════ LOCATION LIVE MAP ════ */
-.location{background:var(--bg)}
-.loc-g{display:grid;grid-template-columns:1.2fr .8fr;gap:5rem;align-items:start;margin-top:5rem}
-.map-outer-frame{background:var(--slab);border:1px solid var(--seam);position:relative;padding:.6rem;overflow:hidden;transition:border-color .4s}
-.map-outer-frame:hover{border-color:var(--fire)}
-.map-responsive{position:relative;padding-bottom:72%;height:0;overflow:hidden}
-.map-responsive iframe{position:absolute;top:0;left:0;width:100%!important;height:100%!important;border:0;}
-.info-items{display:flex;flex-direction:column;gap:1.4rem}
-.ic{display:flex;gap:1.5rem;padding:2rem;background:var(--slab);border:1px solid var(--seam);border-left:4px solid var(--fire);transition:all .3s cubic-bezier(.16,1,.3,1)}
-.ic:hover{transform:translateX(6px);border-color:var(--fire);background:var(--plate)}
-.ic-i{font-size:1.5rem;flex-shrink:0}
-.ic-l{font-family:var(--ff-m);font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--fire);margin-bottom:.4rem;font-weight:700}
-.ic-v{font-size:.95rem;line-height:1.6;color:var(--chalk);font-weight:500}
-.hours-g{display:grid;grid-template-columns:1fr 1fr;gap:.2rem 2rem;margin-top:.5rem}
-.hr{display:flex;justify-content:space-between;font-size:.85rem;padding:.2rem 0;border-bottom:1px solid var(--seam)}
+/* ══════════════════════════════════
+   LOCATION
+══════════════════════════════════ */
+.location{background:var(--slab);padding:var(--sec-y) var(--pad-x)}
+.loc-g{display:grid;grid-template-columns:1.2fr .8fr;gap:4rem;align-items:start;margin-top:3rem}
+.map-frame{background:var(--plate);border:1px solid var(--seam);padding:.5rem;transition:border-color .3s}
+.map-frame:hover{border-color:var(--gold)}
+.map-resp{position:relative;padding-bottom:68%;height:0;overflow:hidden}
+.map-resp iframe{position:absolute;top:0;left:0;width:100%!important;height:100%!important;border:0}
+.info-items{display:flex;flex-direction:column;gap:1.2rem}
+.ic{display:flex;gap:1.2rem;padding:1.5rem;background:var(--bg);border:1px solid var(--seam);border-left:4px solid var(--gold);transition:all .25s}
+.ic:hover{transform:translateX(4px);background:var(--plate)}
+.ic-i{font-size:1.3rem;flex-shrink:0;margin-top:.1rem}
+.ic-l{font-family:var(--ff-m);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem;font-weight:700}
+.ic-v{font-size:.9rem;line-height:1.55;color:var(--chalk)}
+.hours-g{display:grid;grid-template-columns:1fr 1fr;gap:.15rem 1.5rem;margin-top:.4rem}
+.hr{display:flex;justify-content:space-between;font-size:.82rem;padding:.18rem 0;border-bottom:1px solid var(--seam)}
 .hr .d{color:var(--ash)}
-.hr .t{font-family:var(--ff-m);font-size:.72rem;color:var(--void);font-weight:700}
+.hr .t{font-family:var(--ff-m);font-size:.7rem;color:var(--void);font-weight:700}
 
-/* ════ IMPACT STRIP CTA ════ */
-.cta-strip{background:var(--void);padding:11rem 5rem;position:relative;overflow:hidden;text-align:center}
-.cta-ey{font-family:var(--ff-m);font-size:.68rem;letter-spacing:.38em;text-transform:uppercase;color:var(--fire);margin-bottom:1.5rem;position:relative;z-index:1;font-weight:700}
-.cta-h{font-family:var(--ff-d);font-size:clamp(4rem,9vw,9rem);line-height:.86;color:#ffffff;margin-bottom:3rem;position:relative;z-index:1}
-.cta-sub{font-size:1.05rem;color:var(--smoke);max-width:520px;margin:0 auto 3.5rem;line-height:1.72;position:relative;z-index:1;font-weight:500}
-.btn-dark{
-  display:inline-flex;align-items:center;gap:.6rem;background:var(--fire);color:var(--void);padding:1.2rem 3.5rem;
-  font-family:var(--ff-m);font-size:.8rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
-  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
-  border:none;cursor:pointer;position:relative;z-index:1;transition:all .3s;
+/* ══════════════════════════════════
+   NUMBERS BAR
+══════════════════════════════════ */
+.numbers-bar{
+  background:var(--void);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border-top:3px solid var(--gold);
 }
-.btn-dark:hover{background:var(--bg);color:var(--void);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,0.5)}
+.nb{padding:3rem 2rem;border-right:1px solid rgba(255,255,255,.06);text-align:center}
+.nb:last-child{border-right:none}
+.nb-n{font-family:var(--ff-d);font-size:clamp(2.5rem,6vw,4.5rem);line-height:1;color:var(--gold)}
+.nb-l{font-family:var(--ff-m);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash);margin-top:.4rem;font-weight:700}
 
-/* ════ FOOTER ARCHITECTURE ════ */
-footer{background:var(--bg);border-top:1px solid var(--seam);padding:8rem 5rem 3.5rem;position:relative}
-.foot-g{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:5rem;margin-bottom:6rem;position:relative}
-.f-logo{font-family:var(--ff-d);font-size:2.4rem;letter-spacing:.06em;display:flex;align-items:center;gap:0.6rem;margin-bottom:1.2rem;color:var(--void)}
-.f-logo img{height:45px;width:auto;object-fit:contain;}
-.f-logo .o{color:var(--fire)}
-.f-desc{font-size:.9rem;color:var(--ash);line-height:1.8;max-width:265px;margin-bottom:2rem;font-weight:500}
-.socials{display:flex;gap:.7rem}
-.soc{width:40px;height:40px;border:1px solid var(--seam);display:flex;align-items:center;justify-content:center;font-family:var(--ff-m);font-size:.68rem;color:var(--ash);transition:all .25s;font-weight:700}
-.soc:hover{border-color:var(--fire);color:var(--fire);background:var(--fire-soft)}
+/* ══════════════════════════════════
+   CTA
+══════════════════════════════════ */
+.cta-strip{
+  background:var(--void);padding:clamp(5rem,12vw,10rem) var(--pad-x);
+  position:relative;overflow:hidden;text-align:center;
+}
+.cta-strip::before{
+  content:'TRAIN';font-family:var(--ff-d);
+  font-size:clamp(10rem,28vw,32rem);
+  line-height:1;color:rgba(255,255,255,.02);
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  white-space:nowrap;pointer-events:none;
+}
+.cta-ey{font-family:var(--ff-m);font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;position:relative;z-index:1;font-weight:700}
+.cta-h{font-family:var(--ff-d);font-size:clamp(3rem,9vw,8.5rem);line-height:.88;color:#fff;margin-bottom:2.5rem;position:relative;z-index:1}
+.cta-sub{font-size:clamp(.9rem,1.5vw+.3rem,1rem);color:var(--smoke);max-width:500px;margin:0 auto 3rem;line-height:1.68;position:relative;z-index:1}
+.cta-btns{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;position:relative;z-index:1}
 
-.f-col h5{font-family:var(--ff-m);font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--void);margin-bottom:1.8rem;font-weight:700}
-.f-col ul{list-style:none;display:flex;flex-direction:column;gap:.75rem}
-.f-col ul a{font-size:.9rem;color:var(--ash);transition:all .2s;display:block;font-weight:500}
-.f-col ul a:hover{color:var(--fire);padding-left:.5rem}
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+footer{background:var(--bg);border-top:1px solid var(--seam);padding:clamp(4rem,8vw,7rem) var(--pad-x) 2.5rem}
+.foot-g{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4rem;margin-bottom:4rem}
+.f-logo{font-family:var(--ff-d);font-size:clamp(1.6rem,4vw,2.2rem);letter-spacing:.05em;display:block;margin-bottom:1rem;color:var(--void)}
+.f-logo .o{color:var(--gold)}
+.f-desc{font-size:.86rem;color:var(--ash);line-height:1.75;max-width:250px;margin-bottom:1.5rem}
+.socials{display:flex;gap:.6rem}
+.soc{width:38px;height:38px;border:1px solid var(--seam);display:flex;align-items:center;justify-content:center;font-family:var(--ff-m);font-size:.65rem;color:var(--ash);transition:all .2s;font-weight:700}
+.soc:hover{border-color:var(--gold);color:var(--gold)}
+.f-col h5{font-family:var(--ff-m);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--void);margin-bottom:1.5rem;font-weight:700}
+.f-col ul{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+.f-col ul a{font-size:.86rem;color:var(--ash);transition:all .18s;display:block}
+.f-col ul a:hover{color:var(--gold);padding-left:.4rem}
+.foot-bot{border-top:1px solid var(--seam);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem}
+.f-copy{font-size:.76rem;color:var(--ash)}
+.f-copy .hl{color:var(--gold);font-weight:700}
+.f-mono{font-family:var(--ff-m);font-size:.65rem;color:var(--smoke);letter-spacing:.1em}
 
-.foot-bot{border-top:1px solid var(--seam);padding-top:2.2rem;display:flex;justify-content:space-between;align-items:center;position:relative}
-.f-copy{font-size:.8rem;color:var(--ash);font-weight:500}
-.f-copy .hl{color:var(--fire);font-weight:700}
-
-/* ════ WHATSAPP FLOATER ════ */
+/* ══════════════════════════════════
+   WHATSAPP
+══════════════════════════════════ */
 .wa-float{
-  position:fixed;bottom:2.2rem;right:2.2rem;z-index:700;width:58px;height:58px;background:#25d366;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(37,211,102,.25);cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1)
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:700;
+  width:56px;height:56px;background:#25d366;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 20px rgba(37,211,102,.4);cursor:pointer;
+  transition:all .25s cubic-bezier(.16,1,.3,1);text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
 }
-.wa-float:hover{transform:translateY(-4px) scale(1.06);box-shadow:0 12px 30px rgba(37,211,102,.35)}
-.wa-float svg{width:28px;height:28px;fill:white}
+.wa-float:hover,.wa-float:active{transform:scale(1.08);box-shadow:0 10px 28px rgba(37,211,102,.5)}
+.wa-float::before{content:'';position:absolute;width:56px;height:56px;border-radius:50%;background:#25d366;opacity:.35;animation:wap 2.5s ease-out infinite}
+@keyframes wap{0%{transform:scale(1);opacity:.35}100%{transform:scale(2.2);opacity:0}}
+.wa-float svg{position:relative;z-index:2;width:28px;height:28px;fill:#fff}
 
-/* ════ REGISTRATION LEAD MODAL ════ */
-.modal-overlay {
-  position:fixed;inset:0;background:rgba(5,6,8,.5);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
-  z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s;padding:1.5rem;
+/* ══════════════════════════════════
+   MODAL
+══════════════════════════════════ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(5,6,8,.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  z-index:1000;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .35s;padding:1rem;
 }
 .modal-overlay.open{opacity:1;pointer-events:auto}
 .modal-box{
-  background:var(--bg);border:1px solid var(--seam);padding:4rem 3.5rem;max-width:460px;width:100%;position:relative;
-  box-shadow:0 30px 70px rgba(0,0,0,.1);transform:translateY(30px);transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;opacity:0;
+  background:var(--bg);border:1px solid var(--seam);
+  padding:clamp(2rem,5vw,3.5rem) clamp(1.5rem,4vw,3rem);
+  max-width:440px;width:100%;position:relative;
+  box-shadow:0 24px 60px rgba(0,0,0,.12);
+  transform:translateY(24px);transition:transform .35s cubic-bezier(.16,1,.3,1),opacity .35s;opacity:0;
+  max-height:90svh;overflow-y:auto;
 }
 .modal-overlay.open .modal-box{transform:translateY(0);opacity:1}
-.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--fire)}
-.modal-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--ash);font-family:var(--ff-m);font-size:.75rem;letter-spacing:.1em;cursor:pointer;font-weight:700}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gold)}
+.modal-close{position:absolute;top:1.2rem;right:1.2rem;background:none;border:none;color:var(--ash);font-family:var(--ff-m);font-size:.72rem;letter-spacing:.1em;cursor:pointer;font-weight:700;-webkit-tap-highlight-color:transparent}
 .modal-close:hover{color:var(--void)}
-.modal-h{font-family:var(--ff-d);font-size:2.8rem;line-height:1;margin-bottom:.5rem;color:var(--void)}
-.modal-h span{color:var(--fire)}
-.modal-p{font-size:.9rem;color:var(--ash);margin-bottom:2.5rem;line-height:1.65;font-weight:500}
-.form-group{margin-bottom:1.6rem}
-.form-group label{display:block;font-family:var(--ff-m);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--chalk);margin-bottom:.5rem;font-weight:700}
+.modal-h{font-family:var(--ff-d);font-size:clamp(2rem,6vw,2.6rem);line-height:1;margin-bottom:.4rem;color:var(--void)}
+.modal-h span{color:var(--gold)}
+.modal-p{font-size:.86rem;color:var(--ash);margin-bottom:2rem;line-height:1.6}
+.form-group{margin-bottom:1.3rem}
+.form-group label{display:block;font-family:var(--ff-m);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--chalk);margin-bottom:.4rem;font-weight:700}
 .form-input{
-  width:100%;background:var(--slab);border:1px solid var(--seam);padding:1rem 1.2rem;color:var(--void);font-family:var(--ff-b);font-size:1rem;
-  transition:border-color .3s,box-shadow .3s;outline:none;font-weight:500;
+  width:100%;background:var(--slab);border:1px solid var(--seam);
+  padding:.85rem 1rem;color:var(--void);font-family:var(--ff-b);font-size:1rem;
+  /* Prevent iOS zoom on focus — keep font-size 16px+ */
+  font-size:max(1rem,16px);
+  transition:border-color .25s,box-shadow .25s;outline:none;
+  border-radius:2px;
+  -webkit-appearance:none;appearance:none;
 }
-.form-input:focus{border-color:var(--fire);box-shadow:0 0 0 3px var(--fire-soft)}
+.form-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
 select.form-input{
-  appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4af37' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:calc(100% - 1.2rem) center;cursor:pointer;
+  background-repeat:no-repeat;background-position:calc(100% - 1rem) center;cursor:pointer;
 }
 .submit-btn{
-  width:100%;background:var(--void);color:var(--fire);border:none;padding:1.2rem;font-family:var(--ff-m);font-size:.8rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;
-  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));transition:all .25s;
+  width:100%;background:var(--void);color:var(--gold);border:none;
+  padding:1rem;
+  font-family:var(--ff-m);font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  cursor:pointer;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+  transition:all .22s;-webkit-tap-highlight-color:transparent;
 }
-.submit-btn:hover{background:var(--fire);color:var(--void);box-shadow:0 8px 24px var(--fire-glow)}
+.submit-btn:hover,.submit-btn:active{background:var(--gold);color:var(--void)}
 
-/* ════ SCROLL REVEAL ENGINE ════ */
-[data-r]{opacity:0;transform:translateY(36px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+/* ══════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════ */
+[data-r]{opacity:0;transform:translateY(28px);transition:opacity .75s cubic-bezier(.16,1,.3,1),transform .75s cubic-bezier(.16,1,.3,1)}
 [data-r].in{opacity:1;transform:none}
 [data-r][data-d="1"]{transition-delay:.1s}
-[data-r][data-d="2"]{transition-delay:.22s}
+[data-r][data-d="2"]{transition-delay:.2s}
+[data-r][data-d="3"]{transition-delay:.3s}
 
-/* ════ RESPONSIVE ADAPTATION ENGINE ════ */
+/* ══════════════════════════════════
+   TABLET (1024px)
+══════════════════════════════════ */
 @media(max-width:1200px){
-  #nav,#nav.on{padding:1.2rem 3rem}
-  .hero{grid-template-columns:1fr;}
-  .hero-right-display{display:none}
-  .sec{padding:7rem 3rem}
-  footer{padding:5rem 3rem 2.5rem}
-  .edi-content {padding: 6rem 3rem;}
-}
-@media(max-width:1024px){
-  .nav-links{display:none}
-  .hero{padding:0 2rem;align-items:center;padding-top:7rem}
-  .hero-left-content{padding:4rem 0;}
-  .edi-row,.edi-row.reverse{grid-template-columns:1fr;min-height:auto}
-  .edi-media{height:360px}
-  .edi-content{padding:5rem 2rem}
-  .gal-grid{grid-template-columns:1fr; height:auto;}
-  .gal-box, .gal-box.tall{height:260px;}
-  .sec{padding:6rem 2rem}
-  .srv-g,.tc-g{grid-template-columns:1fr;gap:1.5rem}
   .tr-g{grid-template-columns:1fr 1fr}
-  .plans-wrap{grid-template-columns:1fr}
-  .plan.feat{border-left:none;border-right:none;border-top:3px solid var(--fire)}
   .foot-g{grid-template-columns:1fr 1fr;gap:3rem}
-  .cta-strip{padding:7rem 2rem}
+  .plans-wrap{grid-template-columns:1fr}
+  .plan.feat{border-left:none;border-right:none;border-top:3px solid var(--gold)}
   .sch-panel.active{grid-template-columns:1fr}
-  .loc-g{grid-template-columns:1fr;gap:3rem}
-  .hero-stats{flex-direction:column;gap:1.5rem}
 }
-@media(max-width:640px){
-  .tr-g,.foot-g{grid-template-columns:1fr}
-  .hours-g{grid-template-columns:1fr}
-  .sch-row{flex-direction:column;align-items:flex-start;gap:.8rem;padding:1.5rem}
+
+/* ══════════════════════════════════
+   MOBILE (768px and below)
+══════════════════════════════════ */
+@media(max-width:768px){
+  /* Nav — hide links, show hamburger */
+  .nav-links{display:none}
+  .nav-ham{display:flex}
+
+  /* Hero — bigger, bolder */
+  .hero-content{padding:7rem 1.2rem clamp(3rem,8vw,4rem)}
+
+  /* About — stack vertically */
+  .edi-row,.edi-row.reverse{grid-template-columns:1fr;min-height:auto}
+  .edi-media{height:260px;min-height:260px}
+  .edi-content{padding:2.5rem 1.5rem}
+  .pillars{grid-template-columns:1fr 1fr}
+
+  /* Gallery — 2-col on mobile for visibility */
+  .gal-grid{grid-template-columns:1fr 1fr;gap:.75rem}
+  .gal-box.tall{grid-row:span 1}
+  .gal-box.tall::before{padding-bottom:75%}
+  .gal-box.wide{grid-column:span 2}
+  .gal-box.wide::before{padding-bottom:50%}
+  .gal-label{font-size:.52rem;padding:.6rem .8rem}
+
+  /* Services — 1-col stack */
+  .srv-g{grid-template-columns:1fr;gap:1rem}
+  .srv-img{aspect-ratio:16/9}
+
+  /* Testimonials — 1-col */
+  .tc-g{grid-template-columns:1fr;gap:1rem}
+
+  /* Trainers — 1-col */
+  .tr-g{grid-template-columns:1fr 1fr}
+
+  /* Numbers bar — 2-col grid */
+  .numbers-bar{grid-template-columns:1fr 1fr}
+  .nb:nth-child(2){border-right:none}
+  .nb:nth-child(3){border-top:1px solid rgba(255,255,255,.06)}
+
+  /* Location — stack */
+  .loc-g{grid-template-columns:1fr;gap:2rem}
+  .hours-g{grid-template-columns:1fr;gap:0}
+
+  /* Schedule rows — stack on mobile */
+  .sch-panel.active{grid-template-columns:1fr}
+  .sch-row{flex-direction:column;align-items:flex-start;gap:.6rem;padding:1.2rem 1.2rem}
   .sch-time{min-width:auto}
-  .foot-bot{flex-direction:column;gap:1rem;text-align:center}
-  .pillars{grid-template-columns:1fr}
-  .modal-box{padding:2.5rem 1.5rem}
+  .sch-badge{align-self:flex-start}
+
+  /* Footer */
+  .foot-g{grid-template-columns:1fr;gap:2.5rem}
+  .foot-bot{flex-direction:column;text-align:center;gap:.6rem}
+}
+
+/* ══════════════════════════════════
+   SMALL PHONES (480px)
+══════════════════════════════════ */
+@media(max-width:480px){
+  /* Gallery — 1-col on tiny screens */
+  .gal-grid{grid-template-columns:1fr;gap:.75rem}
+  .gal-box.tall{grid-row:span 1}
+  .gal-box.wide{grid-column:span 1}
+  .gal-box.wide::before{padding-bottom:60%}
+
+  /* Trainers — 1-col */
+  .tr-g{grid-template-columns:1fr}
+
+  /* Plans — readable on tiny screen */
+  .plan{padding:2.5rem 1.5rem}
+  .plan-amt{font-size:3rem}
+
+  /* Modal scroll-safe */
+  .modal-box{padding:2rem 1.2rem}
 }
 </style>
 </head>
@@ -457,19 +700,25 @@ select.form-input{
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="loader-logo">
-    <img src="tj_an_u_logo.jfif" alt="" onerror="this.style.display='none'">
-    TJ <span>&</span> U
-  </div>
+  <div class="loader-logo">TJ <span>&</span> U</div>
   <div class="loader-bar"></div>
+  <div class="loader-tag">Buru Buru's finest</div>
+</div>
+
+<!-- NAV MOBILE DRAWER -->
+<div class="nav-drawer" id="navDrawer">
+  <button class="close-x" id="closeDrawer">CLOSE ✕</button>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#gallery" onclick="closeMenu()">Gallery</a>
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#schedule" onclick="closeMenu()">Schedule</a>
+  <a href="#membership" onclick="closeMenu()">Membership</a>
+  <a href="#contact" onclick="closeMenu()">Location</a>
 </div>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nav-logo">
-    <img src="tj_an_u_logo.jfif" alt="" onerror="this.style.display='none'">
-    <span class="o">TJ &amp; U</span>&nbsp;FITNESS CLUB
-  </a>
+  <a href="#" class="nav-logo"><span class="o">TJ &amp; U</span>&nbsp;FITNESS</a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#gallery">Gallery</a></li>
@@ -478,140 +727,185 @@ select.form-input{
     <li><a href="#membership">Membership</a></li>
     <li><a href="#contact">Location</a></li>
   </ul>
+  <button class="nav-ham" id="hamBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
   <button class="nav-btn" id="openModalBtn">Join Now</button>
 </nav>
 
-<!-- SPLIT HERO STAGE -->
+<!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-left-content">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
     <div class="hero-kicker" data-r><span class="kd"></span>Buru Buru · Nairobi · Est. 2024</div>
     <h1 class="hero-h1" data-r data-d="1">DO IT<br>COZ <span class="fire">YOU</span><br><span class="out">COULDN'T</span></h1>
-    <p class="hero-sub" data-r data-d="2">Buru Buru's premier fitness destination. Built with spacious layout tracks, crisp crystal-clear equipment arrays, and supportive personal coaching on Rabai Road.</p>
+    <p class="hero-sub" data-r data-d="2">Buru Buru's premier fitness destination. State-of-the-art equipment, certified coaches, and a community that pushes you further than you thought possible — on Rabai Road.</p>
     <div class="hero-btns" data-r data-d="3">
-      <button class="btn-dark" id="heroJoinBtn">Start Your Journey →</button>
+      <button class="btn-primary" id="heroJoinBtn">Start Your Journey →</button>
+      <a href="#about" class="btn-outline">Explore the gym</a>
     </div>
-    <div class="hero-stats" data-r data-d="4">
+    <div class="hero-stats" data-r data-d="3">
       <div class="hs"><div class="hs-n" data-count="500" data-suffix="+">0+</div><div class="hs-l">Active Members</div></div>
       <div class="hs"><div class="hs-n" data-count="15" data-suffix="">0</div><div class="hs-l">Expert Coaches</div></div>
       <div class="hs"><div class="hs-n" data-count="20" data-suffix="+">0+</div><div class="hs-l">Weekly Classes</div></div>
     </div>
   </div>
-  <div class="hero-right-display"></div>
 </section>
 
-<!-- RUNWAY MARQUEE TICKER -->
+<!-- MARQUEE -->
 <div class="mq" aria-hidden="true">
   <div class="mq-track">
-    <span class="mq-item">TJ &amp; U FITNESS CLUB</span><span class="mq-item">BURU BURU · NAIROBI</span>
-    <span class="mq-item">ELITE STRENGTH TRAINING</span><span class="mq-item">RABAI ROAD · PHASE 1</span>
+    <span class="mq-item">TJ &amp; U FITNESS CLUB</span>
+    <span class="mq-item">BURU BURU · NAIROBI</span>
+    <span class="mq-item">GUIDING YOUR WAY TO YOUR GOALS</span>
+    <span class="mq-item">DO IT COZ YOU THOUGHT YOU COULDN'T</span>
+    <span class="mq-item">RABAI ROAD · PHASE 1</span>
+    <span class="mq-item">EST. 2024 · EASTLANDS</span>
+    <span class="mq-item">TJ &amp; U FITNESS CLUB</span>
+    <span class="mq-item">BURU BURU · NAIROBI</span>
+    <span class="mq-item">GUIDING YOUR WAY TO YOUR GOALS</span>
+    <span class="mq-item">DO IT COZ YOU THOUGHT YOU COULDN'T</span>
+    <span class="mq-item">RABAI ROAD · PHASE 1</span>
+    <span class="mq-item">EST. 2024 · EASTLANDS</span>
   </div>
 </div>
 
-<!-- ABOUT VISUAL EDITORIAL -->
+<!-- ABOUT -->
 <section class="about" id="about">
   <div class="edi-row">
-    <div class="edi-media" style="background-image:url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=900&auto=format&fit=crop')">
+    <div class="edi-media" style="background-image:url('https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=900&q=80&auto=format&fit=crop')">
       <div class="edi-media-num">01</div>
     </div>
     <div class="edi-content">
-      <div class="eyebrow" data-r>Our Space</div>
+      <div class="eyebrow" data-r>Our Story</div>
       <h2 class="sh" data-r data-d="1">WHERE GOALS<br>BECOME <span class="hl">REALITY</span></h2>
-      <p class="ab-p" data-r data-d="2">TJ &amp; U Fitness Club is Buru Buru's welcoming fitness community. Engineered with clean, open floor plans, we match professional, safe workout tracks with a friendly atmosphere designed for real body results.</p>
+      <p class="ab-p" data-r data-d="2">TJ &amp; U Fitness Club is Buru Buru's newest and most exciting fitness destination — built for people who take their health seriously. From the moment you walk in, you'll feel the difference: clean open floors, serious equipment, and coaches who care.</p>
     </div>
   </div>
-  <div class="edi-row reverse">
-    <div class="edi-content">
-      <div class="eyebrow" data-r>The System</div>
-      <h2 class="sh" data-r data-d="1">BUILT ON<br><span class="out">DISCIPLINE</span></h2>
-      <div class="pillars" data-r data-d="2">
-        <div class="pill"><span class="pill-ic">🏋️</span><div class="pill-t">Free Weights Area</div><div class="pill-s">Dumbbells and barbells room setup</div></div>
-        <div class="pill"><span class="pill-ic">🥗</span><div class="pill-t">Simple Nutrition</div><div class="pill-s">Healthy meal advice built for your life</div></div>
-      </div>
-    </div>
-    <div class="edi-media" style="background-image:url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=900&auto=format&fit=crop')">
+  <div class="edi-row" style="direction:rtl">
+    <div class="edi-media" style="background-image:url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=900&q=80&auto=format&fit=crop');direction:ltr">
       <div class="edi-media-num">02</div>
     </div>
+    <div class="edi-content" style="direction:ltr">
+      <div class="eyebrow" data-r>The Philosophy</div>
+      <h2 class="sh" data-r data-d="1">BUILT ON<br><span class="out">DISCIPLINE</span></h2>
+      <div class="pillars" data-r data-d="2">
+        <div class="pill"><span class="pill-ic">🏋️</span><div class="pill-t">Strength Training</div><div class="pill-s">Full free weights &amp; machines</div></div>
+        <div class="pill"><span class="pill-ic">🥗</span><div class="pill-t">Nutrition</div><div class="pill-s">Diet tailored to your goal</div></div>
+        <div class="pill"><span class="pill-ic">🏃</span><div class="pill-t">Cardio Zone</div><div class="pill-s">State-of-the-art equipment</div></div>
+        <div class="pill"><span class="pill-ic">👥</span><div class="pill-t">Community</div><div class="pill-s">Train with a winning team</div></div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- HEAVY LOGO-ALIGNED EQUIPMENT SHOWCASE RUNWAY (9 BRIGHT MATRICES) -->
-<section class="gallery-showcase" id="gallery">
+<!-- NUMBERS BAR -->
+<div class="numbers-bar">
+  <div class="nb" data-r><div class="nb-n" data-count="500" data-suffix="+">0+</div><div class="nb-l">Members</div></div>
+  <div class="nb" data-r data-d="1"><div class="nb-n" data-count="15" data-suffix="">0</div><div class="nb-l">Coaches</div></div>
+  <div class="nb" data-r data-d="2"><div class="nb-n" data-count="20" data-suffix="+">0+</div><div class="nb-l">Classes / Week</div></div>
+  <div class="nb" data-r data-d="3"><div class="nb-n">6AM</div><div class="nb-l">Opens Daily</div></div>
+</div>
+
+<!-- GALLERY -->
+<section class="gallery-sec" id="gallery">
   <div class="eyebrow" data-r>The Facility</div>
-  <h2 class="sh" data-r data-d="1">OUR <span class="hl">EQUIPMENT PORTFOLIO</span></h2>
+  <h2 class="sh" data-r data-d="1">OUR <span class="hl">EQUIPMENT</span></h2>
   <div class="gal-grid">
-    <div class="gal-box tall" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop');" data-r><div class="gal-title-tag">Professional Power Racks</div></div>
-    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop');" data-r data-d="1"><div class="gal-title-tag">Isolated Weight Machines</div></div>
-    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=600&auto=format&fit=crop');" data-r data-d="2"><div class="gal-title-tag">Stamina Treadmill Bay</div></div>
-    <div class="gal-box wide" style="background-image: url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=800&auto=format&fit=crop');" data-r><div class="gal-title-tag">Heavy Dumbbell Arrays</div></div>
-    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=600&auto=format&fit=crop');" data-r data-d="1"><div class="gal-title-tag">Functional Stretching Turf</div></div>
-    <div class="gal-box wide" style="background-image: url('https://images.unsplash.com/photo-1605296867304-46d5465a25f1?q=80&w=800&auto=format&fit=crop');" data-r data-d="2"><div class="gal-title-tag">Luxury Sauna Room</div></div>
-    <div class="gal-box wide" style="background-image: url('https://images.unsplash.com/photo-1546483875-5f01da75f8dd?q=80&w=800&auto=format&fit=crop');" data-r><div class="gal-title-tag">Olympic Barbell Benches</div></div>
-    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1571388208497-71bedc66e932?q=80&w=600&auto=format&fit=crop');" data-r data-d="1"><div class="gal-title-tag">Aerobics Studio Floor</div></div>
-    <div class="gal-box" style="background-image: url('https://images.unsplash.com/photo-1594882645126-14020914d58d?q=80&w=600&auto=format&fit=crop');" data-r data-d="2"><div class="gal-title-tag">Spin Bike Station</div></div>
+
+    <div class="gal-box tall" data-r>
+      <div class="gal-box-inner" style="background-image:url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&q=80&auto=format&fit=crop')"></div>
+      <div class="gal-label">Power Racks</div>
+    </div>
+
+    <div class="gal-box" data-r data-d="1">
+      <div class="gal-box-inner" style="background-image:url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="gal-label">Weight Machines</div>
+    </div>
+
+    <div class="gal-box" data-r data-d="2">
+      <div class="gal-box-inner" style="background-image:url('https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="gal-label">Treadmill Bay</div>
+    </div>
+
+    <div class="gal-box wide" data-r>
+      <div class="gal-box-inner" style="background-image:url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=900&q=80&auto=format&fit=crop')"></div>
+      <div class="gal-label">Dumbbell Area</div>
+    </div>
+
+    <div class="gal-box" data-r data-d="1">
+      <div class="gal-box-inner" style="background-image:url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="gal-label">Stretching Turf</div>
+    </div>
+
+    <div class="gal-box" data-r data-d="2">
+      <div class="gal-box-inner" style="background-image:url('https://images.unsplash.com/photo-1571388208497-71bedc66e932?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="gal-label">Aerobics Studio</div>
+    </div>
+
+    <div class="gal-box wide" data-r>
+      <div class="gal-box-inner" style="background-image:url('https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=900&q=80&auto=format&fit=crop')"></div>
+      <div class="gal-label">Barbell Benches</div>
+    </div>
+
+    <div class="gal-box" data-r data-d="1">
+      <div class="gal-box-inner" style="background-image:url('https://images.unsplash.com/photo-1559674064-e72a5bba9a19?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="gal-label">Spin Bikes</div>
+    </div>
+
+    <div class="gal-box" data-r data-d="2">
+      <div class="gal-box-inner" style="background-image:url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="gal-label">Group Classes</div>
+    </div>
+
   </div>
 </section>
 
-<!-- SERVICES CARDS MATRIX (EXPANDED TO 6 CAPACITY) -->
-<section class="services sec" id="services">
+<!-- SERVICES -->
+<section class="services" id="services">
   <div class="eyebrow" data-r>What We Offer</div>
-  <h2 class="sh" data-r data-d="1">PREMIUM <span class="out">CAPABILITIES</span></h2>
+  <h2 class="sh" data-r data-d="1">PREMIUM <span class="out">SERVICES</span></h2>
   <div class="srv-g">
-    <!-- Service 1 -->
+
     <div class="srv" data-r>
-      <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1534258936925-c58bed479fcb?q=80&w=500&auto=format&fit=crop');"></div>
-      <div class="srv-pad">
-        <div class="srv-t">Weight Training</div>
-        <p class="srv-b">Clean free weights, heavy dumbbells, and targeted workout machines to build muscle or get toned safely.</p>
-      </div>
+      <div class="srv-img" style="background-image:url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="srv-pad"><div class="srv-t">Weight Training</div><p class="srv-b">Full range of free weights, barbells, dumbbells, and resistance machines. Build strength and definition under expert guidance.</p></div>
     </div>
-    <!-- Service 2 -->
+
     <div class="srv" data-r data-d="1">
-      <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1571019613576-2b22c76fd955?q=80&w=500&auto=format&fit=crop');"></div>
-      <div class="srv-pad">
-        <div class="srv-t">Cardio Zone</div>
-        <p class="srv-b">High-quality treadmills, rowers, and exercise bikes to boost your stamina and drop extra weight easily.</p>
-      </div>
+      <div class="srv-img" style="background-image:url('https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="srv-pad"><div class="srv-t">Cardio Zone</div><p class="srv-b">Treadmills, rowers, and exercise bikes to torch calories, boost stamina, and maximize cardiovascular health every session.</p></div>
     </div>
-    <!-- Service 3 -->
+
     <div class="srv" data-r data-d="2">
-      <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=500&auto=format&fit=crop');"></div>
-      <div class="srv-pad">
-        <div class="srv-t">Aerobic Group Classes</div>
-        <p class="srv-b">High-energy fitness classes where you can sweat it out alongside a motivating community of active members.</p>
-      </div>
+      <div class="srv-img" style="background-image:url('https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="srv-pad"><div class="srv-t">Group Fitness</div><p class="srv-b">High-energy classes for all levels. Burn fat and train alongside a community that holds you accountable every time.</p></div>
     </div>
-    <!-- Service 4 -->
+
     <div class="srv" data-r>
-      <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=500&auto=format&fit=crop');"></div>
-      <div class="srv-pad">
-        <div class="srv-t">Luxury Steam &amp; Sauna</div>
-        <p class="srv-b">Complimentary high-end steam bath and hot sauna access to help your muscles relax completely after a tough session.</p>
-      </div>
+      <div class="srv-img" style="background-image:url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="srv-pad"><div class="srv-t">Personal Training</div><p class="srv-b">One-on-one certified coaching with a plan built entirely around your goals, body type, and schedule.</p></div>
     </div>
-    <!-- Service 5 -->
+
     <div class="srv" data-r data-d="1">
-      <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1605296867304-46d5465a25f1?q=80&w=500&auto=format&fit=crop');"></div>
-      <div class="srv-pad">
-        <div class="srv-t">Aura Glow Salon &amp; Spa</div>
-        <p class="srv-b">Full beauty, massage, and therapeutic skin treatment services operating smoothly on our facility complex floor.</p>
-      </div>
+      <div class="srv-img" style="background-image:url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="srv-pad"><div class="srv-t">Nutrition Coaching</div><p class="srv-b">Learn your body type and build eating habits that complement your training. Simple, personal, and effective.</p></div>
     </div>
-    <!-- Service 6 -->
+
     <div class="srv" data-r data-d="2">
-      <div class="srv-img-banner" style="background-image: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=500&auto=format&fit=crop');"></div>
-      <div class="srv-pad">
-        <div class="srv-t">Personal Training</div>
-        <p class="srv-b">One-on-one help from certified floor coaches who guide your workout form and keep you on track every single day.</p>
-      </div>
+      <div class="srv-img" style="background-image:url('https://images.unsplash.com/photo-1605296867304-46d5465a25f1?w=600&q=80&auto=format&fit=crop')"></div>
+      <div class="srv-pad"><div class="srv-t">Sauna &amp; Recovery</div><p class="srv-b">Premium steam bath and sauna access to help your muscles recover and recharge after every tough session.</p></div>
     </div>
+
   </div>
 </section>
 
 <!-- SCHEDULE -->
-<section class="schedule sec" id="schedule">
+<section class="schedule" id="schedule">
   <div class="eyebrow" data-r>Weekly Timetable</div>
   <h2 class="sh" data-r data-d="1">CLASS <span class="hl">SCHEDULE</span></h2>
-  <div class="sch-tabs" data-r data-d="2">
+  <p style="margin-top:.6rem;color:var(--ash);font-size:.9rem" data-r data-d="2">All levels welcome. Tap a day to see what's on.</p>
+  <div class="sch-tabs" data-r data-d="3">
     <button class="sch-tab active" onclick="switchDay('mon',this)">Mon</button>
     <button class="sch-tab" onclick="switchDay('tue',this)">Tue</button>
     <button class="sch-tab" onclick="switchDay('wed',this)">Wed</button>
@@ -623,33 +917,39 @@ select.form-input{
   <div id="sch-mon" class="sch-panel active">
     <div class="sch-row"><div class="sch-time">06:00 – 07:00</div><div class="sch-info"><div class="sch-name">Morning Kickstart</div><div class="sch-coach">Coach Prince</div></div><span class="sch-badge sb-all">All Levels</span></div>
     <div class="sch-row"><div class="sch-time">09:00 – 10:00</div><div class="sch-info"><div class="sch-name">Strength &amp; Sculpt</div><div class="sch-coach">Coach TJ</div></div><span class="sch-badge sb-int">Intermediate</span></div>
+    <div class="sch-row"><div class="sch-time">12:30 – 13:15</div><div class="sch-info"><div class="sch-name">Express Burn</div><div class="sch-coach">Coach Prince</div></div><span class="sch-badge sb-all">All Levels</span></div>
     <div class="sch-row"><div class="sch-time">17:00 – 18:00</div><div class="sch-info"><div class="sch-name">Cardio Shred</div><div class="sch-coach">Coach Asha</div></div><span class="sch-badge sb-beg">Beginner+</span></div>
-    <div class="sch-row"><div class="sch-time">18:00 – 19:00</div><div class="sch-info"><div class="sch-name">Core Attack</div><div class="sch-coach">Coach TJ</div></div><span class="sch-badge sb-sig">🔥 Iconic</span></div>
+    <div class="sch-row"><div class="sch-time">18:00 – 19:00</div><div class="sch-info"><div class="sch-name">Core Attack</div><div class="sch-coach">Coach TJ</div></div><span class="sch-badge sb-all">All Levels</span></div>
+    <div class="sch-row"><div class="sch-time">19:00 – 20:00</div><div class="sch-info"><div class="sch-name">Strength &amp; Sculpt</div><div class="sch-coach">Coach Marcus</div></div><span class="sch-badge sb-int">Intermediate</span></div>
   </div>
   <div id="sch-tue" class="sch-panel">
     <div class="sch-row"><div class="sch-time">06:00 – 07:00</div><div class="sch-info"><div class="sch-name">Cardio Shred</div><div class="sch-coach">Coach Asha</div></div><span class="sch-badge sb-beg">Beginner+</span></div>
     <div class="sch-row"><div class="sch-time">09:00 – 10:00</div><div class="sch-info"><div class="sch-name">Core Attack</div><div class="sch-coach">Coach TJ</div></div><span class="sch-badge sb-all">All Levels</span></div>
     <div class="sch-row"><div class="sch-time">17:00 – 18:00</div><div class="sch-info"><div class="sch-name">Strength &amp; Sculpt</div><div class="sch-coach">Coach TJ</div></div><span class="sch-badge sb-int">Intermediate</span></div>
+    <div class="sch-row"><div class="sch-time">19:00 – 20:00</div><div class="sch-info"><div class="sch-name">Cardio Shred</div><div class="sch-coach">Coach Asha</div></div><span class="sch-badge sb-beg">Beginner+</span></div>
   </div>
   <div id="sch-wed" class="sch-panel">
     <div class="sch-row"><div class="sch-time">06:00 – 07:00</div><div class="sch-info"><div class="sch-name">Strength &amp; Sculpt</div><div class="sch-coach">Coach Marcus</div></div><span class="sch-badge sb-int">Intermediate</span></div>
     <div class="sch-row"><div class="sch-time">09:00 – 10:00</div><div class="sch-info"><div class="sch-name">Morning Kickstart</div><div class="sch-coach">Coach Prince</div></div><span class="sch-badge sb-all">All Levels</span></div>
+    <div class="sch-row"><div class="sch-time">17:00 – 18:00</div><div class="sch-info"><div class="sch-name">Cardio Shred</div><div class="sch-coach">Coach Asha</div></div><span class="sch-badge sb-beg">Beginner+</span></div>
     <div class="sch-row"><div class="sch-time">18:00 – 20:00</div><div class="sch-info"><div class="sch-name">Strength &amp; Sculpt</div><div class="sch-coach">Coach TJ</div></div><span class="sch-badge sb-adv">Advanced</span></div>
   </div>
   <div id="sch-thu" class="sch-panel">
     <div class="sch-row"><div class="sch-time">06:00 – 07:00</div><div class="sch-info"><div class="sch-name">Cardio Shred</div><div class="sch-coach">Coach Asha</div></div><span class="sch-badge sb-beg">Beginner+</span></div>
     <div class="sch-row"><div class="sch-time">09:00 – 10:00</div><div class="sch-info"><div class="sch-name">Core Attack</div><div class="sch-coach">Coach Prince</div></div><span class="sch-badge sb-all">All Levels</span></div>
     <div class="sch-row"><div class="sch-time">17:00 – 19:00</div><div class="sch-info"><div class="sch-name">Strength &amp; Sculpt</div><div class="sch-coach">Coach TJ</div></div><span class="sch-badge sb-int">Intermediate</span></div>
+    <div class="sch-row"><div class="sch-time">19:00 – 20:00</div><div class="sch-info"><div class="sch-name">Morning Kickstart</div><div class="sch-coach">Coach Asha</div></div><span class="sch-badge sb-all">All Levels</span></div>
   </div>
   <div id="sch-fri" class="sch-panel">
     <div class="sch-row"><div class="sch-time">06:00 – 07:00</div><div class="sch-info"><div class="sch-name">Morning Kickstart</div><div class="sch-coach">Coach Prince</div></div><span class="sch-badge sb-all">All Levels</span></div>
     <div class="sch-row"><div class="sch-time">12:30 – 13:15</div><div class="sch-info"><div class="sch-name">Express Burn</div><div class="sch-coach">Coach Marcus</div></div><span class="sch-badge sb-all">All Levels</span></div>
     <div class="sch-row"><div class="sch-time">17:00 – 19:00</div><div class="sch-info"><div class="sch-name">🔥 FRIDAY BLAST</div><div class="sch-coach">Coach Prince — SIGNATURE CLASS</div></div><span class="sch-badge sb-sig">🔥 Iconic</span></div>
+    <div class="sch-row"><div class="sch-time">19:00 – 20:00</div><div class="sch-info"><div class="sch-name">Cardio Shred</div><div class="sch-coach">Coach Asha</div></div><span class="sch-badge sb-beg">Beginner+</span></div>
   </div>
   <div id="sch-sat" class="sch-panel">
     <div class="sch-row"><div class="sch-time">07:00 – 08:00</div><div class="sch-info"><div class="sch-name">Morning Kickstart</div><div class="sch-coach">Coach TJ</div></div><span class="sch-badge sb-all">All Levels</span></div>
     <div class="sch-row"><div class="sch-time">09:00 – 10:00</div><div class="sch-info"><div class="sch-name">Strength &amp; Sculpt</div><div class="sch-coach">Coach Marcus</div></div><span class="sch-badge sb-int">Intermediate</span></div>
-    <div class="sch-row"><div class="sch-time">11:30 – 13:00</div><div class="sch-info"><div class="sch-name">⚡ Weekend Warriors</div><div class="sch-coach">Coach TJ — FULL GYM SESSION</div></div><span class="sch-badge sb-adv">Advanced</span></div>
+    <div class="sch-row"><div class="sch-time">11:30 – 13:00</div><div class="sch-info"><div class="sch-name">⚡ Weekend Warriors</div><div class="sch-coach">Coach TJ — FULL GYM</div></div><span class="sch-badge sb-adv">Advanced</span></div>
   </div>
   <div id="sch-sun" class="sch-panel">
     <div class="sch-row"><div class="sch-time">08:00 – 09:00</div><div class="sch-info"><div class="sch-name">Morning Kickstart</div><div class="sch-coach">Coach Asha</div></div><span class="sch-badge sb-all">All Levels</span></div>
@@ -657,59 +957,89 @@ select.form-input{
   </div>
 </section>
 
+<!-- TESTIMONIALS -->
+<section class="testi" id="testimonials">
+  <div class="eyebrow" data-r>Member Stories</div>
+  <h2 class="sh" data-r data-d="1">REAL RESULTS,<br><span class="out">REAL PEOPLE</span></h2>
+  <div class="tc-g">
+    <div class="tc" data-r>
+      <div class="tc-stars"><span></span><span></span><span></span><span></span><span></span></div>
+      <p class="tc-body">"Newest sensation in Buru Buru for good reason. The equipment is top-tier and the coaches actually care about your form. Three months in and the results speak for themselves."</p>
+      <div class="tc-author"><div class="tc-av">NM</div><div><div class="tc-name">Nico M.</div><div class="tc-role">Member since 2024</div></div></div>
+    </div>
+    <div class="tc" data-r data-d="1">
+      <div class="tc-stars"><span></span><span></span><span></span><span></span><span></span></div>
+      <p class="tc-body">"The Friday Blast class with Coach Prince is unlike anything in Nairobi. You leave completely destroyed but feeling accomplished. TJ &amp; U is the gym Eastlands has always deserved."</p>
+      <div class="tc-author"><div class="tc-av">AK</div><div><div class="tc-name">Amina K.</div><div class="tc-role">Elite Member</div></div></div>
+    </div>
+    <div class="tc" data-r data-d="2">
+      <div class="tc-stars"><span></span><span></span><span></span><span></span><span></span></div>
+      <p class="tc-body">"The nutrition coaching is what makes TJ &amp; U different. They don't just help you lift — they teach you to eat right. Lost 12kg in 4 months and kept my strength."</p>
+      <div class="tc-author"><div class="tc-av">BM</div><div><div class="tc-name">Brian M.</div><div class="tc-role">Champion Member</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COACHES -->
+<section class="trainers" id="trainers">
+  <div class="eyebrow" data-r>Meet the Team</div>
+  <h2 class="sh" data-r data-d="1">OUR <span class="out">COACHES</span></h2>
+  <div class="tr-g">
+    <div class="tr" data-r><div class="tr-av">TJ</div><div class="tr-name">Coach TJ</div><div class="tr-role">Head Coach &amp; Founder</div><p class="tr-bio">The visionary behind TJ &amp; U. Specializes in strength programming and body transformation with no-excuses intensity.</p><div class="tr-tags"><span class="tr-tag">Strength</span><span class="tr-tag">Body Comp</span><span class="tr-tag">Nutrition</span></div></div>
+    <div class="tr" data-r data-d="1"><div class="tr-av">PR</div><div class="tr-name">Coach Prince</div><div class="tr-role">Group Fitness Lead</div><p class="tr-bio">The energy behind Friday Blast. Brings infectious motivation and technically precise high-intensity training.</p><div class="tr-tags"><span class="tr-tag">HIIT</span><span class="tr-tag">Group Fitness</span><span class="tr-tag">Endurance</span></div></div>
+    <div class="tr" data-r data-d="2"><div class="tr-av">AS</div><div class="tr-name">Coach Asha</div><div class="tr-role">Cardio &amp; Beginners</div><p class="tr-bio">Makes beginners feel at home while pushing them beyond what they thought possible. Expert in sustainable fat loss.</p><div class="tr-tags"><span class="tr-tag">Cardio</span><span class="tr-tag">Fat Loss</span><span class="tr-tag">Beginners</span></div></div>
+    <div class="tr" data-r data-d="3"><div class="tr-av">MK</div><div class="tr-name">Coach Marcus</div><div class="tr-role">Strength &amp; Conditioning</div><p class="tr-bio">Former competitive powerlifter. Brings elite-level strength programming to everyday athletes.</p><div class="tr-tags"><span class="tr-tag">Powerlifting</span><span class="tr-tag">Strength</span><span class="tr-tag">Sport Perf</span></div></div>
+  </div>
+</section>
+
 <!-- MEMBERSHIP -->
-<section class="membership sec" id="membership">
+<section class="membership" id="membership">
   <div class="eyebrow" data-r>Flexible Plans</div>
   <h2 class="sh" data-r data-d="1">CHOOSE YOUR <span class="out">PLAN</span></h2>
-  <div class="plan-switch" data-r model data-d="2">
+  <p style="margin-top:.6rem;color:var(--ash);font-size:.9rem" data-r data-d="2">Full gym access included. No hidden fees. Cancel anytime.</p>
+  <div class="plan-switch" data-r data-d="3">
     <button class="ps-btn active" onclick="switchPlan('monthly',this)">Monthly</button>
     <button class="ps-btn" onclick="switchPlan('quarterly',this)">3 Months</button>
     <button class="ps-btn" onclick="switchPlan('biannual',this)">6 Months</button>
     <button class="ps-btn" onclick="switchPlan('annual',this)">Annual</button>
   </div>
-  
-  <!-- MONTHLY -->
   <div id="plan-monthly" class="plans-wrap">
-    <div class="plan"><div class="plan-name">Starter</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">2,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">Frictionless access track</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 group classes/week</li><li class="on"><span class="chk con">✓</span>Locker access</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
-    <div class="plan feat"><div class="plan-rib">Most Popular</div><div class="plan-name">Elite</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">4,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">Best value roadmap metrics</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio equipment</li><li class="on"><span class="chk con">✓</span>Unlimited group classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="btn-dark">Join Elite →</button></div>
-    <div class="plan"><div class="plan-name">Champion</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">7,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">Elite level lifters portfolio</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Unlimited group classes</li><li class="on"><span class="chk con">✓</span>Unlimited PT access</li><li class="on"><span class="chk con">✓</span>Full nutrition blueprints</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
+    <div class="plan"><div class="plan-name">Starter</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">2,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">Perfect for beginners</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 classes/week</li><li class="on"><span class="chk con">✓</span>Locker access</li><li><span class="chk coff">×</span>Personal training</li><li><span class="chk coff">×</span>Nutrition coaching</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
+    <div class="plan feat"><div class="plan-rib">Most Popular</div><div class="plan-name">Elite</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">4,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">Best value for serious members</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>All cardio equipment</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>Locker access</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li><li class="on"><span class="chk con">✓</span>Nutrition consult</li></ul><button class="plan-btn pb-fire">Join Elite →</button></div>
+    <div class="plan"><div class="plan-name">Champion</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">7,500</span><span class="plan-per">/mo</span></div><div class="plan-desc">For dedicated athletes</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>Unlimited PT sessions</li><li class="on"><span class="chk con">✓</span>Full nutrition plan</li><li class="on"><span class="chk con">✓</span>Priority booking</li><li class="on"><span class="chk con">✓</span>Progress tracking</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
   </div>
-
-  <!-- QUARTERLY -->
   <div id="plan-quarterly" class="plans-wrap" style="display:none">
-    <div class="plan"><div class="plan-name">Starter · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">6,750</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> upfront metrics</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 group classes/week</li><li class="on"><span class="chk con">✓</span>14-day freeze safety</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
-    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">12,150</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> value tier</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio matrices</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="btn-dark">Join Elite →</button></div>
-    <div class="plan"><div class="plan-name">Champion · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">20,250</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> complete pack</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Unlimited PT access</li><li class="on"><span class="chk con">✓</span>Full nutrition track</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
+    <div class="plan"><div class="plan-name">Starter · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">6,750</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> vs monthly</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 classes/week</li><li class="on"><span class="chk con">✓</span>14-day freeze</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
+    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">12,150</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> vs monthly</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li><li class="on"><span class="chk con">✓</span>14-day freeze</li></ul><button class="plan-btn pb-fire">Join Elite →</button></div>
+    <div class="plan"><div class="plan-name">Champion · 3 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">20,250</span><span class="plan-per">/3mo</span></div><div class="plan-desc"><span class="save">Save 10%</span> vs monthly</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Unlimited PT sessions</li><li class="on"><span class="chk con">✓</span>Full nutrition plan</li><li class="on"><span class="chk con">✓</span>Priority booking</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
   </div>
-
-  <!-- BIANNUAL -->
   <div id="plan-biannual" class="plans-wrap" style="display:none">
-    <div class="plan"><div class="plan-name">Starter · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">12,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> validation</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 group classes/week</li><li class="on"><span class="chk con">✓</span>30-day hold matrix</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
-    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">22,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> focus choice</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio matrices</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="btn-dark">Join Elite →</button></div>
-    <div class="plan"><div class="plan-name">Champion · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">37,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> systems build</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Unlimited PT access</li><li class="on"><span class="chk con">✓</span>30-day hold matrix</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
+    <div class="plan"><div class="plan-name">Starter · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">12,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> vs monthly</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 classes/week</li><li class="on"><span class="chk con">✓</span>30-day freeze</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
+    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">22,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> vs monthly</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li><li class="on"><span class="chk con">✓</span>30-day freeze</li></ul><button class="plan-btn pb-fire">Join Elite →</button></div>
+    <div class="plan"><div class="plan-name">Champion · 6 Mo</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">37,500</span><span class="plan-per">/6mo</span></div><div class="plan-desc"><span class="save">Save 17%</span> vs monthly</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Unlimited PT sessions</li><li class="on"><span class="chk con">✓</span>Full nutrition plan</li><li class="on"><span class="chk con">✓</span>30-day freeze</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
   </div>
-
-  <!-- ANNUAL -->
   <div id="plan-annual" class="plans-wrap" style="display:none">
-    <div class="plan"><div class="plan-name">Starter · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">22,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> full index</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 group classes/week</li><li class="on"><span class="chk con">✓</span>Baseline guest passes</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
-    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">40,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> master year</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>All cardio matrices</li><li class="on"><span class="chk con">✓</span>Unlimited club classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li></ul><button class="btn-dark">Join Elite →</button></div>
-    <div class="plan"><div class="plan-name">Champion · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">67,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> apex layout</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym floor access</li><li class="on"><span class="chk con">✓</span>Unlimited PT access</li><li class="on"><span class="chk con">✓</span>Priority scheduling</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
+    <div class="plan"><div class="plan-name">Starter · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">22,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> — full year</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Cardio equipment</li><li class="on"><span class="chk con">✓</span>2 classes/week</li><li class="on"><span class="chk con">✓</span>Guest passes ×4</li></ul><button class="plan-btn pb-ghost">Get Started</button></div>
+    <div class="plan feat"><div class="plan-rib">Best Value</div><div class="plan-name">Elite · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">40,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> — ultimate choice</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Unlimited classes</li><li class="on"><span class="chk con">✓</span>4 PT sessions/month</li><li class="on"><span class="chk con">✓</span>60-day freeze + passes</li></ul><button class="plan-btn pb-fire">Join Elite →</button></div>
+    <div class="plan"><div class="plan-name">Champion · Annual</div><div class="plan-price"><span class="plan-cur">KSh</span><span class="plan-amt">67,500</span><span class="plan-per">/yr</span></div><div class="plan-desc"><span class="save">Save 25%</span> — max commitment</div><div class="plan-line"></div><ul class="plan-feats"><li class="on"><span class="chk con">✓</span>Full gym access</li><li class="on"><span class="chk con">✓</span>Unlimited PT sessions</li><li class="on"><span class="chk con">✓</span>Full nutrition plan</li><li class="on"><span class="chk con">✓</span>Priority booking</li></ul><button class="plan-btn pb-ghost">Go Champion</button></div>
   </div>
 </section>
 
 <!-- LOCATION -->
-<section class="location sec" id="contact">
+<section class="location" id="contact">
   <div class="eyebrow" data-r>Find Us</div>
   <h2 class="sh" data-r data-d="1">WE'RE IN<br><span class="hl">BURU BURU</span></h2>
   <div class="loc-g">
-    <div class="map-outer-frame" data-r>
-      <div class="map-responsive">
+    <div class="map-frame" data-r>
+      <div class="map-resp">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d714.5751670698185!2d36.87126233855912!3d-1.2790797184252753!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1375f5f74557%3A0x923125ee9a880f97!2sTJ%20and%20U%20Fitness!5e0!3m2!1sen!2ske!4v1780174470396!5m2!1sen!2ske" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
     <div class="info-items">
-      <div class="ic" data-r><div class="ic-i">📍</div><div><div class="ic-l">Address</div><div class="ic-v">Rabai Road, Buru Buru Phase 1<br>Nairobi, Kenya</div></div></div>
-      <div class="ic" data-r data-d="1"><div class="ic-i">🕐</div><div><div class="ic-l">Hours</div><div class="hours-g"><div class="hr"><span class="d">Mon – Fri</span><span class="t">06:00 – 22:00</span></div><div class="hr"><span class="d">Saturday</span><span class="t">07:00 – 20:00</span></div><div class="hr"><span class="d">Sunday</span><span class="t">08:00 – 18:00</span></div></div></div></div>
+      <div class="ic" data-r><div class="ic-i">📍</div><div><div class="ic-l">Address</div><div class="ic-v">Rabai Road, Buru Buru Phase 1<br>Nairobi South, Nairobi, Kenya</div></div></div>
+      <div class="ic" data-r data-d="1"><div class="ic-i">🕐</div><div><div class="ic-l">Hours</div><div class="hours-g"><div class="hr"><span class="d">Mon – Fri</span><span class="t">06:00 – 22:00</span></div><div class="hr"><span class="d">Saturday</span><span class="t">07:00 – 20:00</span></div><div class="hr"><span class="d">Sunday</span><span class="t">08:00 – 18:00</span></div><div class="hr"><span class="d">Public Hols</span><span class="t">08:00 – 17:00</span></div></div></div></div>
+      <div class="ic" data-r data-d="2"><div class="ic-i">📲</div><div><div class="ic-l">Social</div><div class="ic-v">Instagram: <a href="https://instagram.com/tjandufitness" target="_blank" style="color:var(--gold);font-weight:700">@tjandufitness</a><br>Facebook: TJ and U Fitness Club</div></div></div>
+      <div class="ic" data-r data-d="3"><div class="ic-i">🚌</div><div><div class="ic-l">Getting Here</div><div class="ic-v">Matatu routes along Rabai Road serve the gym directly. Accessible from Buru Buru and Eastlands.</div></div></div>
     </div>
   </div>
 </section>
@@ -718,53 +1048,57 @@ select.form-input{
 <section class="cta-strip">
   <div class="cta-ey">Ready to transform?</div>
   <h2 class="cta-h">YOUR BEST SELF<br>STARTS TODAY</h2>
-  <button class="btn-dark" id="ctaJoinBtn">Join Now →</button>
+  <p class="cta-sub">Stop thinking, start doing. Walk into TJ &amp; U Fitness Club and discover what your body is truly capable of. Coaches ready. Equipment ready. Are you?</p>
+  <div class="cta-btns">
+    <button class="btn-primary" id="ctaJoinBtn" style="background:var(--gold);color:var(--void)">Join Now →</button>
+    <a href="#contact" class="btn-outline" style="color:#fff;border-color:rgba(255,255,255,.3)">Find Us</a>
+  </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div class="foot-g">
     <div>
-      <span class="f-logo">
-        <img src="tj_an_u_logo.jfif" alt="" onerror="this.style.display='none'">
-        <span class="o">TJ &amp; U</span>&nbsp;FITNESS CLUB
-      </span>
-      <p class="f-desc">Buru Buru's definitive high-visibility fitness brand footprint matrix.</p>
+      <span class="f-logo"><span class="o">TJ &amp; U</span>&nbsp;FITNESS CLUB</span>
+      <p class="f-desc">Buru Buru's premier fitness destination. Guiding Nairobi's Eastlands to their goals — one rep at a time.</p>
       <div class="socials">
         <a href="https://instagram.com/tjandufitness" class="soc" target="_blank" rel="noopener">IG</a>
         <a href="https://facebook.com/p/TJ-and-U-Fitness-100064082797789" class="soc" target="_blank" rel="noopener">FB</a>
+        <a href="https://www.youtube.com/watch?v=uv7TK53v1vQ" class="soc" target="_blank" rel="noopener">YT</a>
       </div>
     </div>
-    <div class="f-col"><h5>Navigate</h5><ul><li><a href="#about">About Club</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#services">Services</a></li><li><a href="#schedule">Schedule</a></li><li><a href="#membership">Membership</a></li></ul></div>
-    <div class="f-col"><h5>Capabilities</h5><ul><li><a href="#">Weight Room</a></li><li><a href="#">Cardio Track</a></li><li><a href="#">Coaching</a></li></ul></div>
-    <div class="f-col"><h5>Contact</h5><ul><li><a href="#">Rabai Rd, Phase 1</a></li><li><a href="#">Mon–Fri: 6AM–10PM</a></li><li><a href="#">Sat: 7AM–8PM</a></li></ul></div>
+    <div class="f-col"><h5>Navigate</h5><ul><li><a href="#about">About</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#services">Services</a></li><li><a href="#schedule">Schedule</a></li><li><a href="#membership">Membership</a></li></ul></div>
+    <div class="f-col"><h5>Services</h5><ul><li><a href="#">Weight Training</a></li><li><a href="#">Cardio Zone</a></li><li><a href="#">Personal Training</a></li><li><a href="#">Group Classes</a></li><li><a href="#">Nutrition Coaching</a></li></ul></div>
+    <div class="f-col"><h5>Contact</h5><ul><li><a href="#">Rabai Rd, Buru Buru Ph.1</a></li><li><a href="https://instagram.com/tjandufitness" target="_blank">@tjandufitness</a></li><li><a href="#">Mon–Fri: 6AM–10PM</a></li><li><a href="#">Sat: 7AM–8PM</a></li><li><a href="#">Sun: 8AM–6PM</a></li></ul></div>
   </div>
   <div class="foot-bot">
     <p class="f-copy">© 2026 <span class="hl">TJ &amp; U Fitness Club</span>. All rights reserved. Nairobi, Kenya.</p>
+    <p class="f-mono">Physical Fitness · Health &amp; Wellbeing</p>
   </div>
 </footer>
 
-<!-- WHATSAPP FLOATER -->
-<a class="wa-float" href="https://wa.me/254700000000?text=Hi%20TJ%20%26%20U%20Fitness%20Club!" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+<!-- WHATSAPP -->
+<a class="wa-float" href="https://wa.me/254700000000?text=Hi%20TJ%20%26%20U%20Fitness%20Club!%20I%27d%20like%20to%20join." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- MODAL LEAD CAPTURE -->
+<!-- MODAL -->
 <div class="modal-overlay" id="joinModal">
   <div class="modal-box">
     <button class="modal-close" id="closeModal">CLOSE ✕</button>
     <h3 class="modal-h">START YOUR <span>JOURNEY</span></h3>
+    <p class="modal-p">Leave your details. Coach TJ or the team will contact you via WhatsApp or Call immediately to set up your first session.</p>
     <form id="joinForm" onsubmit="handleJoinSubmit(event)">
       <div class="form-group">
         <label for="clientName">Full Name</label>
-        <input type="text" id="clientName" class="form-input" required placeholder="e.g., Juma Omondi">
+        <input type="text" id="clientName" class="form-input" required placeholder="e.g., Juma Omondi" autocomplete="name">
       </div>
       <div class="form-group">
-        <label for="clientPhone">Phone Number (WhatsApp preferred)</label>
-        <input type="tel" id="clientPhone" class="form-input" required placeholder="e.g., 0712 345 678">
+        <label for="clientPhone">Phone Number (WhatsApp)</label>
+        <input type="tel" id="clientPhone" class="form-input" required placeholder="e.g., 0712 345 678" autocomplete="tel">
       </div>
       <div class="form-group">
-        <label for="clientPackage">Preferred Membership Tier</label>
+        <label for="clientPackage">Preferred Plan</label>
         <select id="clientPackage" class="form-input">
           <option value="elite">Elite Membership — KSh 4,500/mo</option>
           <option value="starter">Starter Plan — KSh 2,500/mo</option>
@@ -782,19 +1116,36 @@ window.addEventListener('load', () => {
   setTimeout(() => document.getElementById('loader').classList.add('gone'), 1200);
 });
 
-/* ── Nav Scroll Toggle ── */
+/* ── Nav scroll ── */
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => nav.classList.toggle('on', scrollY > 60), {passive:true});
+window.addEventListener('scroll', () => nav.classList.toggle('on', scrollY > 50), {passive:true});
 
-/* ── Scroll Reveal Observer ── */
+/* ── Mobile hamburger ── */
+const hamBtn = document.getElementById('hamBtn');
+const drawer = document.getElementById('navDrawer');
+const closeDrawerBtn = document.getElementById('closeDrawer');
+
+hamBtn.addEventListener('click', () => {
+  const open = drawer.classList.toggle('open');
+  nav.classList.toggle('menu-open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+});
+closeDrawerBtn.addEventListener('click', closeMenu);
+function closeMenu(){
+  drawer.classList.remove('open');
+  nav.classList.remove('menu-open');
+  document.body.style.overflow = '';
+}
+
+/* ── Scroll reveal ── */
 const ro = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)} });
-}, {threshold:0.06});
+}, {threshold:0.06,rootMargin:'0px 0px -30px 0px'});
 document.querySelectorAll('[data-r]').forEach(el => ro.observe(el));
 
-/* ── Count-up Mechanics ── */
+/* ── Count-up ── */
 function countUp(el, target, suffix) {
-  const dur = 2000, start = performance.now();
+  const dur = 1800, start = performance.now();
   const run = now => {
     const p = Math.min((now-start)/dur, 1);
     const ease = 1 - Math.pow(1-p, 4);
@@ -813,7 +1164,7 @@ const co = new IntersectionObserver(entries => {
 }, {threshold:0.4});
 document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
 
-/* ── Tabbed Schedule Switcher ── */
+/* ── Schedule ── */
 function switchDay(day, btn) {
   document.querySelectorAll('.sch-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sch-tab').forEach(t => t.classList.remove('active'));
@@ -821,7 +1172,7 @@ function switchDay(day, btn) {
   btn.classList.add('active');
 }
 
-/* ── Term Switcher ── */
+/* ── Plan switcher ── */
 function switchPlan(period, btn) {
   document.querySelectorAll('.plans-wrap').forEach(p => p.style.display = 'none');
   document.querySelectorAll('.ps-btn').forEach(b => b.classList.remove('active'));
@@ -829,27 +1180,35 @@ function switchPlan(period, btn) {
   btn.classList.add('active');
 }
 
-/* ── Registration Modal Controller ── */
+/* ── Modal ── */
 const modal = document.getElementById('joinModal');
 function openModal(tier) {
   modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
   if(tier) document.getElementById('clientPackage').value = tier;
 }
+function closeModalFn(){
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 document.getElementById('openModalBtn').addEventListener('click', () => openModal());
 document.getElementById('heroJoinBtn').addEventListener('click', () => openModal());
 document.getElementById('ctaJoinBtn').addEventListener('click', () => openModal());
-document.querySelectorAll('.plan-btn, .btn-dark, .btn-fire').forEach(btn => {
+document.getElementById('closeModal').addEventListener('click', closeModalFn);
+modal.addEventListener('click', e => { if(e.target === modal) closeModalFn(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModalFn(); });
+
+document.querySelectorAll('.plan-btn, .pb-fire, .pb-ghost').forEach(btn => {
   btn.addEventListener('click', (e) => {
-    e.preventDefault();
+    e.stopPropagation();
     const plan = btn.closest('.plan');
     if(plan){
       const name = plan.querySelector('.plan-name').textContent.toLowerCase();
       openModal(name.includes('champion') ? 'champion' : name.includes('elite') ? 'elite' : 'starter');
-    } else openModal();
+    }
   });
 });
-document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('open'));
-modal.addEventListener('click', e => { if(e.target === modal) modal.classList.remove('open'); });
 
 function handleJoinSubmit(event) {
   event.preventDefault();
@@ -857,9 +1216,11 @@ function handleJoinSubmit(event) {
   const phone = document.getElementById('clientPhone').value;
   const sel = document.getElementById('clientPackage');
   const tier = sel.options[sel.selectedIndex].text;
-  alert(`Asante ${name}!\n\nYour request for the ${tier} has been recorded.\n\nThe TJ & U Fitness Club team will reach out to you at ${phone} via WhatsApp or Call very shortly. Welcome to the family!`);
+  closeModalFn();
+  setTimeout(() => {
+    alert(`Asante ${name}! 🙏\n\nYour request for the ${tier} has been received.\n\nThe TJ & U Fitness Club team will contact you at ${phone} via WhatsApp or call very shortly. Welcome to the family!`);
+  }, 300);
   document.getElementById('joinForm').reset();
-  modal.classList.remove('open');
 }
 </script>
 </body>
